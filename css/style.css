@@ -134,3 +134,40 @@ figure img { max-width: 100%; height: auto; background: #fff; border-radius: 8px
   .stat b { font-size: 1.35rem; }
   .card { padding: 14px; }
 }
+
+/* ---------- Phase 2: readiness, heat map, practice exams ---------- */
+.readiness { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; margin: 4px 0 14px; }
+.ready-row { display: flex; gap: 24px; flex-wrap: wrap; }
+.label { display: block; font-size: .85rem; color: var(--quiet); }
+.big-num { font-size: 2rem; line-height: 1.15; }
+.big-num small { font-size: 1rem; color: var(--quiet); font-weight: 400; }
+.scale { position: relative; height: 10px; background: var(--line); border-radius: 5px; margin: 26px 0 8px; }
+.scale .fill { position: absolute; inset: 0 auto 0 0; background: var(--meh); border-radius: 5px; }
+.scale .fill.ok { background: var(--good); }
+.scale .passline { position: absolute; top: -6px; bottom: -6px; width: 2px; background: var(--ink); }
+.scale .passline em { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); font-size: .75rem; font-style: normal; color: var(--quiet); white-space: nowrap; margin-bottom: 2px; }
+.ready { background: var(--good-bg); color: var(--good); font-weight: 600; padding: 8px 12px; border-radius: 8px; }
+.readiness .hint { margin: 6px 0 0; }
+.actions { display: grid; gap: 10px; }
+.diagnostic { background: var(--card); border: 2px solid var(--accent); border-radius: var(--radius); padding: 4px 16px 6px; }
+.diagnostic h2 { margin-top: 12px; }
+.heat { display: grid; gap: 6px; }
+.heat-row { display: grid; grid-template-columns: 2.2em auto 1fr; align-items: center; gap: 10px; }
+.heat-id { font-weight: 700; font-size: .95rem; }
+.heat-cells { display: flex; gap: 4px; }
+.heat-title { color: var(--quiet); font-size: .85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cell { width: 30px; height: 30px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-size: .8rem; font-weight: 600; }
+.cell.l0, .key.l0 { background: var(--bad-bg); color: var(--bad); border: 1px solid var(--bad); }
+.cell.l1, .key.l1 { background: var(--meh-bg); color: var(--meh); border: 1px solid var(--meh); }
+.cell.l2, .key.l2 { background: color-mix(in srgb, var(--good) 25%, var(--card)); color: var(--good); border: 1px solid var(--good); }
+.cell.l3, .key.l3 { background: var(--good); color: var(--card); border: 1px solid var(--good); }
+.mode { font-size: .85rem; font-weight: 600; color: var(--accent); white-space: nowrap; }
+.breakdown { width: 100%; border-collapse: collapse; font-size: .95rem; }
+.breakdown td { padding: 6px 0; border-bottom: 1px solid var(--line); }
+.breakdown .num { text-align: right; font-variant-numeric: tabular-nums; }
+.breakdown .num.all { color: var(--good); font-weight: 600; }
+@media (max-width: 420px) {
+  .heat-title { display: none; }
+  .heat-row { grid-template-columns: 2.2em 1fr; }
+  .cell { width: 34px; height: 34px; }
+}

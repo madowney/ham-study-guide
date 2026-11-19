@@ -10,6 +10,9 @@ It follows the research on how people learn fastest for a multiple-choice exam w
 - **Confidence check.** After picking an answer you tap *I'm sure* or *I'm guessing*. A correct guess is scheduled like a miss, so lucky guesses don't count as learned.
 - **Successive relearning.** A missed question comes back later in the same session. A question only counts as *learned* after sure, correct answers on two different days.
 - **Shuffled choices.** Answer order changes every time, so you learn the answer instead of its letter. "All these choices are correct" stays last.
+- **Readiness score.** The guide predicts your exam score and your chance of passing. A question counts toward the prediction only if your last answer to it was sure and correct, discounted by how likely FSRS thinks you still remember it, with a 25% floor for a blind guess. The exam draws one question from each of 35 groups, so each group's odds average its questions, and the pass chance is computed exactly from those 35 odds. A heat map shows the 35 groups so you can see where the points are.
+- **Practice exams.** Each one is built like the real exam: one random question per group, with no feedback until the end. Your first one is an optional cold diagnostic. Answers update your study schedule, but questions first seen in an exam don't use up the daily new-question limit.
+- **When to book.** The guide says *you're ready* once your predicted pass chance reaches 95% and your latest practice exam also passed.
 
 ## Use it
 
@@ -65,7 +68,7 @@ No build step and no dependencies at runtime.
 
 ## Roadmap
 
-1. **Drill tool:** spaced repetition, confidence check, feedback, saved progress. *(this release)*
-2. **Readiness:** cold diagnostic, mock exams built like the real one, predicted score and pass probability.
+1. **Drill tool:** spaced repetition, confidence check, feedback, saved progress. *(done)*
+2. **Readiness:** cold diagnostic, practice exams built like the real one, predicted score, pass probability, and group heat map. *(done)*
 3. **Understanding:** short explanations for every question, primers for the math and electronics clusters, band chart, confusable-pair drills.
 4. **Polish:** offline install, settings for target retention, pool switcher for 2027.
