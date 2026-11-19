@@ -43,6 +43,28 @@ for (const pool of manifest.pools) {
     if (subGroups !== s.examQuestions) fail(pool.id, `${s.id}: expected ${s.examQuestions} groups, found ${subGroups}`);
   }
   for (const w of pool.withdrawn) if (ids.has(w)) fail(pool.id, `withdrawn question ${w} is still present`);
+
+  // Lessons are optional per pool, but if an index exists it must be complete and consistent.
+  const lessonDir = join(root, 'lessons', pool.id);
+  const indexFile = join(lessonDir, 'index.json');
+  if (existsSync(indexFile) && pool.lessons !== `lessons/${pool.id}/index.json`) fail(pool.id, `pools.json should set "lessons": "lessons/${pool.id}/index.json"`);
+  if (pool.lessons && !existsSync(join(root, pool.lessons))) fail(pool.id, `lesson index ${pool.lessons} missing`);
+  if (existsSync(indexFile)) {
+    const index = JSON.parse(readFileSync(indexFile, 'utf8'));
+    const listed = index.units.flatMap(u => u.groups);
+    const written = Object.keys(index.lessons);
+    for (const g of listed) if (!groups.has(g)) fail(pool.id, `lesson index lists unknown group ${g}`);
+    if (new Set(listed).size !== listed.length) fail(pool.id, 'lesson index lists a group twice');
+    for (const g of written) {
+      if (!listed.includes(g)) fail(pool.id, `lesson ${g} is not in any unit`);
+      if (!existsSync(join(lessonDir, `${g}.html`))) fail(pool.id, `lesson file ${g}.html missing`);
+      const { title, minutes } = index.lessons[g];
+      if (!title || !(minutes > 0)) fail(pool.id, `lesson ${g} needs a title and minutes`);
+      const html = existsSync(join(lessonDir, `${g}.html`)) ? readFileSync(join(lessonDir, `${g}.html`), 'utf8') : '';
+      for (const [, src] of html.matchAll(/src="([^"]+)"/g)) if (!existsSync(join(root, src))) fail(pool.id, `lesson ${g} image ${src} missing`);
+    }
+    console.log(`  lessons: ${written.length} of ${groups.size} groups written`);
+  }
 }
 
 if (failures) { console.error(`\n${failures} problem(s) found.`); process.exit(1); }

@@ -171,3 +171,41 @@ figure img { max-width: 100%; height: auto; background: #fff; border-radius: 8px
   .heat-row { grid-template-columns: 2.2em 1fr; }
   .cell { width: 34px; height: 34px; }
 }
+
+/* ---------- Phase 3: lessons ---------- */
+.lesson-next { background: var(--card); border: 2px solid var(--accent); border-radius: var(--radius); padding: 14px 16px; display: grid; gap: 6px; }
+.lesson-next b { font-size: 1.15rem; }
+.lesson-next .link { justify-self: start; font-size: .95rem; }
+.unit h2 { margin-top: 22px; }
+.lesson-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; }
+.lesson-link { width: 100%; display: grid; grid-template-columns: 3.2em 1fr 1.5em; gap: 8px; align-items: center; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; min-height: 48px; }
+.lesson-link:hover { border-color: var(--accent); }
+.lesson-link.done .lt { color: var(--quiet); }
+.gid { font-weight: 700; font-size: .9rem; color: var(--quiet); }
+.tick { color: var(--good); font-weight: 700; text-align: right; }
+.lesson-list .soon { display: grid; grid-template-columns: 3.2em 1fr; gap: 8px; padding: 10px 12px; color: var(--quiet); font-style: italic; }
+
+.lesson { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 16px; line-height: 1.6; }
+.lesson h1 { font-size: 1.45rem; line-height: 1.25; margin: 0 0 12px; }
+.lesson h2 { font-size: 1.1rem; margin: 26px 0 8px; }
+.lesson p, .lesson ul, .lesson ol { margin: 0 0 12px; }
+.lesson li { margin-bottom: 4px; }
+.lesson .lede { font-size: 1.05rem; }
+.lesson table { border-collapse: collapse; width: 100%; margin: 4px 0 14px; font-size: .95rem; }
+.lesson th, .lesson td { border-bottom: 1px solid var(--line); padding: 6px 8px 6px 0; text-align: left; vertical-align: top; }
+.lesson th { color: var(--quiet); font-weight: 600; font-size: .85rem; }
+.lesson .table-wrap { overflow-x: auto; }
+.lesson .keyfacts { background: color-mix(in srgb, var(--accent) 8%, var(--card)); border-left: 4px solid var(--accent); border-radius: 8px; padding: 10px 14px 4px; margin: 18px 0 8px; }
+.lesson .keyfacts h2 { margin-top: 2px; font-size: 1rem; }
+.lesson .tip { background: var(--meh-bg); border-radius: 8px; padding: 10px 14px; }
+.lesson .formula { font: 600 1.1rem ui-monospace, Menlo, Consolas, monospace; text-align: center; background: var(--bg); border-radius: 8px; padding: 10px; }
+.lesson figure { margin: 8px 0 16px; }
+.lesson figure svg { width: 100%; height: auto; max-width: 560px; display: block; margin: 0 auto; }
+.lesson figcaption { font-size: .85rem; color: var(--quiet); text-align: center; margin-top: 4px; }
+.lesson svg text { fill: var(--ink); font-family: system-ui, sans-serif; }
+.lesson svg .quiet { fill: var(--quiet); }
+.lesson svg .stroke { stroke: var(--ink); fill: none; }
+.lesson svg .accent { stroke: var(--accent); fill: none; }
+.lesson svg .accent-fill { fill: var(--accent); }
+.lesson svg .band { fill: color-mix(in srgb, var(--accent) 22%, var(--card)); stroke: var(--accent); }
+.lesson abbr { text-decoration: underline dotted; }

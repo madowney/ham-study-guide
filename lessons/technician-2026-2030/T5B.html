@@ -1,0 +1,43 @@
+<p class="lede">Radio deals with tiny and huge numbers: microvolts of signal and megahertz of frequency. Metric prefixes make those manageable, and decibels make comparing power easy. This is a math lesson, but a gentle one.</p>
+
+<h2>Metric prefixes</h2>
+<div class="table-wrap"><table>
+  <tr><th>Prefix</th><th>Means</th><th>Example</th></tr>
+  <tr><td>pico (p)</td><td>one-trillionth</td><td>picofarad (capacitors)</td></tr>
+  <tr><td>micro (µ)</td><td>one-millionth</td><td><b>1 microvolt = 0.000001 volt</b></td></tr>
+  <tr><td>milli (m)</td><td>one-thousandth</td><td>1 milliamp = 0.001 amp</td></tr>
+  <tr><td>kilo (k)</td><td>thousand</td><td><b>1 kilovolt = 1000 volts</b></td></tr>
+  <tr><td>mega (M)</td><td>million</td><td>1 MHz = 1,000,000 Hz</td></tr>
+  <tr><td>giga (G)</td><td>billion</td><td>1 GHz = 1000 MHz</td></tr>
+</table></div>
+<p>Each step on the ladder (pico, nano, micro, milli, base unit, kilo, mega, giga) is a factor of <b>1000</b>. Moving one step means moving the decimal point <b>three places</b>.</p>
+
+<h2>Converting, step by step</h2>
+<ul>
+  <li>Going to a <b>smaller</b> unit, the number gets <b>bigger</b>: 1.5 A = <b>1500 mA</b>. 3.525 MHz = <b>3525 kHz</b>.</li>
+  <li>Going to a <b>bigger</b> unit, the number gets <b>smaller</b>: 3000 mA = <b>3 A</b>. 500 mW = <b>0.5 W</b>. 28,400 kHz = <b>28.400 MHz</b>. 2425 MHz = <b>2.425 GHz</b>.</li>
+  <li>1,500,000 Hz = <b>1500 kHz</b> (= 1.5 MHz).</li>
+  <li>1,000,000 picofarads = <b>1 microfarad</b>. That's two steps, pico to nano to micro: 1,000,000 pF = 1000 nF = 1 µF.</li>
+</ul>
+<p class="tip">Sanity check: the answer should be "a bigger number of the smaller thing" or "a smaller number of the bigger thing." If both got bigger, you went the wrong way.</p>
+
+<h2>Decibels (dB)</h2>
+<p>Decibels describe power changes as ratios. You need only three facts:</p>
+<div class="table-wrap"><table>
+  <tr><th>Power change</th><th>Decibels</th><th>Exam example</th></tr>
+  <tr><td>Doubled (×2)</td><td><b>+3 dB</b></td><td>5 W → 10 W</td></tr>
+  <tr><td>Quartered (÷4)</td><td><b>−6 dB</b> (two halvings: −3, −3)</td><td>12 W → 3 W</td></tr>
+  <tr><td>×10</td><td><b>+10 dB</b></td><td>20 W → 200 W</td></tr>
+</table></div>
+<p>Halving is −3 dB, so a quarter is two halvings, or −6 dB. Likewise ×4 is +6 dB and ×100 is +20 dB.</p>
+
+<div class="keyfacts">
+  <h2>Key facts</h2>
+  <ul>
+    <li>Each prefix step = ×1000, or three decimal places.</li>
+    <li>1.5 A = 1500 mA · 3000 mA = 3 A · 500 mW = 0.5 W · 1 kV = 1000 V · 1 µV = one-millionth of a volt.</li>
+    <li>1,500,000 Hz = 1500 kHz · 3.525 MHz = 3525 kHz · 28,400 kHz = 28.4 MHz · 2425 MHz = 2.425 GHz.</li>
+    <li>1,000,000 pF = 1 µF.</li>
+    <li>×2 = +3 dB · ÷4 = −6 dB · ×10 = +10 dB.</li>
+  </ul>
+</div>

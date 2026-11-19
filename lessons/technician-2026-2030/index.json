@@ -1,0 +1,222 @@
+{
+ "pool": "technician-2026-2030",
+ "units": [
+  {
+   "title": "Radio basics",
+   "groups": [
+    "T3B"
+   ]
+  },
+  {
+   "title": "The rules",
+   "groups": [
+    "T1A",
+    "T1C",
+    "T1B",
+    "T1D",
+    "T1E",
+    "T1F"
+   ]
+  },
+  {
+   "title": "On the air",
+   "groups": [
+    "T2A",
+    "T2B",
+    "T2C",
+    "T4A",
+    "T4B"
+   ]
+  },
+  {
+   "title": "Signals and modes",
+   "groups": [
+    "T8A",
+    "T8B",
+    "T8C",
+    "T8D"
+   ]
+  },
+  {
+   "title": "Electricity",
+   "groups": [
+    "T5A",
+    "T5B",
+    "T5D",
+    "T5C"
+   ]
+  },
+  {
+   "title": "Components and circuits",
+   "groups": [
+    "T6A",
+    "T6B",
+    "T6C",
+    "T6D",
+    "T7A",
+    "T7B",
+    "T7C",
+    "T7D"
+   ]
+  },
+  {
+   "title": "Propagation and antennas",
+   "groups": [
+    "T3A",
+    "T3C",
+    "T9A",
+    "T9B"
+   ]
+  },
+  {
+   "title": "Safety",
+   "groups": [
+    "T0A",
+    "T0B",
+    "T0C"
+   ]
+  }
+ ],
+ "lessons": {
+  "T3B": {
+   "title": "Radio waves, wavelength and frequency",
+   "minutes": 5
+  },
+  "T1A": {
+   "title": "What amateur radio is for",
+   "minutes": 4
+  },
+  "T1C": {
+   "title": "License classes, call signs and terms",
+   "minutes": 3
+  },
+  "T1B": {
+   "title": "Your frequency privileges",
+   "minutes": 5
+  },
+  "T1D": {
+   "title": "Who you may talk to, and what you can't send",
+   "minutes": 4
+  },
+  "T1E": {
+   "title": "The control operator",
+   "minutes": 3
+  },
+  "T1F": {
+   "title": "Identifying your station and third-party traffic",
+   "minutes": 3
+  },
+  "T2A": {
+   "title": "Simplex, repeaters and calling",
+   "minutes": 3
+  },
+  "T2B": {
+   "title": "Repeater tones, offsets and troubleshooting",
+   "minutes": 4
+  },
+  "T2C": {
+   "title": "Emergency and public service operating",
+   "minutes": 3
+  },
+  "T4A": {
+   "title": "Setting up a station",
+   "minutes": 4
+  },
+  "T4B": {
+   "title": "Operating controls",
+   "minutes": 3
+  },
+  "T8A": {
+   "title": "Modulation: AM, FM, SSB and CW",
+   "minutes": 3
+  },
+  "T8B": {
+   "title": "Amateur satellites",
+   "minutes": 3
+  },
+  "T8C": {
+   "title": "Direction finding, contests and linking",
+   "minutes": 3
+  },
+  "T8D": {
+   "title": "Digital modes",
+   "minutes": 3
+  },
+  "T5A": {
+   "title": "Current, voltage, power and resistance",
+   "minutes": 3
+  },
+  "T5B": {
+   "title": "Metric prefixes and decibels",
+   "minutes": 3
+  },
+  "T5D": {
+   "title": "Ohm's law and series and parallel circuits",
+   "minutes": 4
+  },
+  "T5C": {
+   "title": "Capacitance, inductance and power math",
+   "minutes": 3
+  },
+  "T6A": {
+   "title": "Resistors, capacitors, inductors and batteries",
+   "minutes": 3
+  },
+  "T6B": {
+   "title": "Diodes and transistors",
+   "minutes": 3
+  },
+  "T6C": {
+   "title": "Reading schematic diagrams",
+   "minutes": 3
+  },
+  "T6D": {
+   "title": "Rectifiers, relays, regulators and more",
+   "minutes": 3
+  },
+  "T7A": {
+   "title": "Receivers and transmitters",
+   "minutes": 3
+  },
+  "T7B": {
+   "title": "Fixing interference and distorted signals",
+   "minutes": 3
+  },
+  "T7C": {
+   "title": "SWR, dummy loads and testing feed lines",
+   "minutes": 3
+  },
+  "T7D": {
+   "title": "Using meters and soldering",
+   "minutes": 3
+  },
+  "T3A": {
+   "title": "Fading, multipath and polarization",
+   "minutes": 3
+  },
+  "T3C": {
+   "title": "VHF and UHF propagation and the ionosphere",
+   "minutes": 3
+  },
+  "T9A": {
+   "title": "Antennas: dipoles, verticals and beams",
+   "minutes": 3
+  },
+  "T9B": {
+   "title": "Feed lines and connectors",
+   "minutes": 3
+  },
+  "T0A": {
+   "title": "Electrical safety",
+   "minutes": 3
+  },
+  "T0B": {
+   "title": "Tower and antenna safety",
+   "minutes": 3
+  },
+  "T0C": {
+   "title": "RF exposure safety",
+   "minutes": 3
+  }
+ }
+}

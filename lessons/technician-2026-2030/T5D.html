@@ -1,0 +1,64 @@
+<p class="lede">Ohm's law is the most useful formula in electronics, and it's worth a dozen exam questions. It links voltage, current and resistance, and once you can use it, every one of those questions is just arithmetic.</p>
+
+<h2>Ohm's law</h2>
+<p class="formula">E = I × R</p>
+<p><b>E</b> is voltage (volts), <b>I</b> is current (amps), <b>R</b> is resistance (ohms). Rearranged, it gives all three formulas the exam asks for:</p>
+<ul>
+  <li>Current: <b>I = E ÷ R</b></li>
+  <li>Voltage: <b>E = I × R</b></li>
+  <li>Resistance: <b>R = E ÷ I</b></li>
+</ul>
+<figure>
+  <svg viewBox="0 0 300 200" role="img" aria-label="Ohm's law triangle: E on top, I and R on the bottom">
+    <path class="accent" d="M150 15 L 280 185 L 20 185 Z" stroke-width="2.5"/>
+    <line class="stroke" x1="78" y1="110" x2="222" y2="110" stroke-width="1.5"/>
+    <line class="stroke" x1="150" y1="110" x2="150" y2="185" stroke-width="1.5"/>
+    <text x="150" y="88" font-size="36" font-weight="700" text-anchor="middle">E</text>
+    <text x="102" y="164" font-size="36" font-weight="700" text-anchor="middle">I</text>
+    <text x="198" y="164" font-size="36" font-weight="700" text-anchor="middle">R</text>
+  </svg>
+  <figcaption>Cover the letter you want. Side by side means multiply; one above the other means divide.</figcaption>
+</figure>
+<p class="tip">Cover <b>I</b>: you see E over R, so I = E ÷ R. Cover <b>E</b>: you see I next to R, so E = I × R. Cover <b>R</b>: you see E over I, so R = E ÷ I.</p>
+
+<h2>Worked examples (all from the pool)</h2>
+<div class="table-wrap"><table>
+  <tr><th>Given</th><th>Find</th><th>Work</th><th>Answer</th></tr>
+  <tr><td>90 V, 3 A</td><td>R</td><td>90 ÷ 3</td><td><b>30 Ω</b></td></tr>
+  <tr><td>12 V, 1.5 A</td><td>R</td><td>12 ÷ 1.5</td><td><b>8 Ω</b></td></tr>
+  <tr><td>12 V, 4 A</td><td>R</td><td>12 ÷ 4</td><td><b>3 Ω</b></td></tr>
+  <tr><td>120 V, 80 Ω</td><td>I</td><td>120 ÷ 80</td><td><b>1.5 A</b></td></tr>
+  <tr><td>200 V, 100 Ω</td><td>I</td><td>200 ÷ 100</td><td><b>2 A</b></td></tr>
+  <tr><td>240 V, 24 Ω</td><td>I</td><td>240 ÷ 24</td><td><b>10 A</b></td></tr>
+  <tr><td>0.5 A, 2 Ω</td><td>E</td><td>0.5 × 2</td><td><b>1 V</b></td></tr>
+  <tr><td>1 A, 10 Ω</td><td>E</td><td>1 × 10</td><td><b>10 V</b></td></tr>
+  <tr><td>2 A, 10 Ω</td><td>E</td><td>2 × 10</td><td><b>20 V</b></td></tr>
+</table></div>
+<p>The wrong answers are usually what you'd get by multiplying when you should divide, or the reverse. If an answer is absurd, like 9600 amps from a wall socket, it's the decoy.</p>
+
+<h2>Series and parallel</h2>
+<figure>
+  <svg viewBox="0 0 560 150" role="img" aria-label="Series: components in one line, same current. Parallel: side by side, same voltage">
+    <text x="130" y="20" font-size="14" font-weight="600" text-anchor="middle">Series</text>
+    <path class="stroke" d="M20 80 H 60 M100 80 H 160 M200 80 H 240" stroke-width="2"/>
+    <rect class="accent" x="60" y="70" width="40" height="20" stroke-width="2"/><rect class="accent" x="160" y="70" width="40" height="20" stroke-width="2"/>
+    <text x="130" y="125" font-size="12" text-anchor="middle">one path: same CURRENT</text>
+    <text x="420" y="20" font-size="14" font-weight="600" text-anchor="middle">Parallel</text>
+    <path class="stroke" d="M320 40 V 110 M520 40 V 110 M320 50 H 400 M440 50 H 520 M320 100 H 400 M440 100 H 520" stroke-width="2"/>
+    <rect class="accent" x="400" y="40" width="40" height="20" stroke-width="2"/><rect class="accent" x="400" y="90" width="40" height="20" stroke-width="2"/>
+    <text x="420" y="140" font-size="12" text-anchor="middle">side by side: same VOLTAGE</text>
+  </svg>
+</figure>
+<ul>
+  <li><b>Series</b>: everything is in one line, so <b>the same current flows through every component</b>.</li>
+  <li><b>Parallel</b>: components sit side by side across the same two points, so <b>each one has the same voltage across it</b>.</li>
+</ul>
+
+<div class="keyfacts">
+  <h2>Key facts</h2>
+  <ul>
+    <li>I = E ÷ R · E = I × R · R = E ÷ I. (E = voltage, I = current.)</li>
+    <li>Use the triangle: E on top, I and R on the bottom.</li>
+    <li>Series: same current. Parallel: same voltage.</li>
+  </ul>
+</div>

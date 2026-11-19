@@ -10,6 +10,7 @@ const browser = await chromium.launch();
 const errors = [];
 
 async function correctIndex(page) {
+  await page.locator('.choice').first().waitFor();
   const qid = (await page.locator('.qid').innerText()).split(' ')[0];
   const correct = await page.evaluate(async id => {
     window.__pools ||= {};
@@ -58,34 +59,58 @@ async function run(name, contextOpts) {
   assert.equal(await page.locator('.misses li').count(), 7);
   await shot(page, `${name}-2-diagnostic-result`);
 
-  // 3. Home now shows the diagnostic score, a higher prediction, and a full day of new questions.
+  // 3. Home now shows the diagnostic score, a higher prediction, and the first lesson.
   await page.getByRole('button', { name: 'Back to overview' }).click();
   const card = await page.locator('.readiness').innerText();
   assert.match(card, /Last practice exam: 28\/35/);
   const predicted = Number(card.match(/([\d.]+)\s*\/35/)[1]);
   assert.ok(predicted > 9, `prediction should rise after a good diagnostic (got ${predicted})`);
-  const startBtn = page.getByRole('button', { name: /Start session · \d+ questions/ });
-  const n = Number((await startBtn.innerText()).match(/(\d+) questions/)[1]);
-  assert.ok(n >= 20, 'diagnostic does not use up the daily new budget');
+  assert.match(await page.locator('.lesson-next').innerText(), /Next lesson · 1 of 35[\s\S]*Radio waves/);
+  await page.getByRole('button', { name: /Daily review|No reviews due/ }).waitFor();
   await shot(page, `${name}-3-home-after-diagnostic`);
 
-  // 4. Study session: miss one, guess one, the rest right and sure. Two repeats expected.
-  await startBtn.click();
+  // 4. Read the first lesson, then practice its questions: miss one, guess one, the rest right and sure.
+  await page.getByRole('button', { name: 'Read the lesson' }).click();
+  await page.locator('#lesson-body .keyfacts').waitFor();
+  assert.match(await page.locator('.lesson h1').innerText(), /Radio waves/);
+  assert.ok(await page.locator('#lesson-body svg').count() > 0, 'lesson has a diagram');
+  await shot(page, `${name}-4-lesson`);
+  const practiceBtn = page.getByRole('button', { name: /Practice now · \d+ questions/ });
+  const n = Number((await practiceBtn.innerText()).match(/(\d+) questions/)[1]);
+  assert.equal(n, 12);
+  await practiceBtn.click();
   let answered = 0;
   for (let guard = 0; guard < 80; guard++) {
-    if (await page.getByRole('heading', { name: 'Session done' }).isVisible()) break;
+    if (await page.getByRole('heading', { name: /Practice done/ }).isVisible()) break;
     await answer(page, { right: answered !== 0, sure: answered !== 1 });
-    if (answered === 0) await shot(page, `${name}-4-feedback-miss`);
+    if (answered === 0) {
+      await shot(page, `${name}-5-feedback-miss`);
+      // The feedback links back to the lesson, and you can return to the same question.
+      const qid = await page.locator('.qid').innerText();
+      await page.locator('[data-action="lesson-from-session"]').click();
+      await page.locator('#lesson-body .keyfacts').waitFor();
+      await page.getByRole('button', { name: 'Back to the question', exact: true }).click();
+      assert.equal(await page.locator('.qid').innerText(), qid);
+      await page.locator('.verdict').waitFor();
+    }
     answered++;
     await page.getByRole('button', { name: /Next|Finish/ }).click();
   }
-  assert.ok(await page.getByRole('heading', { name: 'Session done' }).isVisible());
+  assert.ok(await page.getByRole('heading', { name: /Practice done/ }).isVisible());
   assert.equal(answered, n + 2);
+  await page.getByRole('button', { name: /Next lesson: What amateur radio is for/ }).waitFor();
+  await page.getByRole('button', { name: 'Back to overview' }).click();
 
-  // 5. Progress survives a reload.
+  // 5. Progress survives a reload, and the lesson list shows what has been read.
   await page.reload();
   await page.locator('.stat b').first().waitFor();
-  assert.equal((await page.locator('.stats .stat b').allInnerTexts())[1], '0', 'no new questions left today');
+  assert.match((await page.locator('.stats .stat b').allInnerTexts())[1], /^1\s*\/35$/, 'one lesson read');
+  assert.match(await page.locator('.lesson-next').innerText(), /2 of 35/);
+  await page.getByRole('button', { name: 'All lessons' }).click();
+  assert.equal(await page.locator('.lesson-list li').count(), 35);
+  assert.equal(await page.locator('.lesson-list .tick', { hasText: '✓' }).count(), 1);
+  await shot(page, `${name}-6-lesson-list`);
+  await page.getByRole('button', { name: /Overview/ }).click();
 
   // 6. Stopping a practice exam early doesn't record a score.
   await page.getByRole('button', { name: /Take a practice exam/ }).click();
@@ -98,10 +123,10 @@ async function run(name, contextOpts) {
   for (let i = 0; i < 35; i++) await answer(page);
   await page.getByRole('heading', { name: 'Practice exam done' }).waitFor();
   assert.match(await page.locator('main').innerText(), /model predicted/);
-  await shot(page, `${name}-5-practice-result`);
+  await shot(page, `${name}-7-practice-result`);
   await page.getByRole('button', { name: 'Back to overview' }).click();
   assert.match(await page.locator('.readiness').innerText(), /Last practice exam: 35\/35 \(pass\)/);
-  await shot(page, `${name}-6-home-after-practice`);
+  await shot(page, `${name}-8-home-after-practice`);
 
   // 8. General is a separate, fresh pool. Skip the diagnostic; keyboard flow on desktop.
   await page.getByRole('button', { name: 'General', exact: true }).click();
