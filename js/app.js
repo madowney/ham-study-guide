@@ -1,6 +1,6 @@
 import {
   DEFAULTS, makeScheduler, shuffleChoices, applyAnswer, statusOf, buildSession, requeue,
-  progressBySubelement, refLinks, newIntroducedToday,
+  progressBySubelement, refLinks, newIntroducedToday, readiness, buildMock, readyToBook,
 } from './engine.js';
 import * as store from './store.js';
 
@@ -74,16 +74,28 @@ function homeView() {
 
   const startLabel = next ? `Start session · ${next} question${next === 1 ? '' : 's'}` : 'Nothing due right now';
   const hint = next ? '' : `<p class="hint">You've done today's new questions and nothing is due. Come back tomorrow, or raise the daily limit in Settings.</p>`;
+  const fresh = seen.length === 0;
+  const actions = fresh
+    ? `<div class="diagnostic">
+        <h2>Start with a cold diagnostic</h2>
+        <p>Take a 35-question practice exam before studying anything. Guessing is fine; trying first makes the later studying stick better, and it gives you a starting score.</p>
+        <button class="primary big" data-action="mock" data-kind="diagnostic" data-autofocus>Take the diagnostic · 35 questions</button>
+        <p><button class="link" data-action="start">Skip it and start studying</button></p>
+      </div>`
+    : `<button class="primary big" data-action="start" ${next ? 'data-autofocus' : 'disabled'}>${startLabel}</button>
+       ${hint}
+       <button class="secondary big" data-action="mock" data-kind="practice">Take a practice exam · 35 questions</button>`;
   return `${header()}
   <main>
     ${state.notice ? `<p class="notice">${esc(state.notice)}</p>` : ''}
+    ${readinessCard(now)}
     <section class="stats">
       <div class="stat"><b>${dueNow}</b><span>due for review</span></div>
       <div class="stat"><b>${Math.min(newLeft, unseen)}</b><span>new left today</span></div>
       <div class="stat"><b>${learned}<small>/${state.questions.length}</small></b><span>learned</span></div>
     </section>
-    <button class="primary big" data-action="start" ${next ? 'data-autofocus' : 'disabled'}>${startLabel}</button>
-    ${hint}
+    <div class="actions">${actions}</div>
+    ${heatMap(now)}
     <section>
       <h2>Progress by subelement</h2>
       <p class="legend"><span class="key learned"></span>learned <span class="key learning"></span>in progress <span class="key new"></span>not seen</p>
@@ -92,6 +104,55 @@ function homeView() {
     <p class="foot">${esc(state.pool.name)} pool ${state.pool.validFrom.slice(0, 4)}–${state.pool.validTo.slice(0, 4)} · ${state.questions.length} questions · pass with ${state.pool.passing} of ${state.pool.examQuestions}
       · <button class="link" data-action="settings">Settings and backup</button></p>
   </main>`;
+}
+
+const mocksFor = () => (state.settings.mocks || []).filter(m => m.pool === state.pool.id);
+const pct = x => `${Math.round(100 * x)}%`;
+
+function readinessCard(now) {
+  const r = readiness(state.questions, state.records, state.scheduler, { passing: state.pool.passing, now });
+  const mocks = mocksFor();
+  const last = mocks[mocks.length - 1];
+  const exam = state.pool.examQuestions;
+  const passAt = state.pool.passing;
+  const ready = readyToBook(r.passChance, mocks, passAt);
+  let verdict;
+  if (ready) verdict = `<p class="ready">You're ready. Book your ${esc(state.pool.name)} exam.</p>`;
+  else if (r.passChance >= 0.95) verdict = `<p class="hint">The model says you're ready. Pass a practice exam to confirm it.</p>`;
+  else verdict = `<p class="hint">Book the exam when this passes 95% and your latest practice exam passes too.</p>`;
+  const lastMock = last
+    ? `<span>Last practice exam: <b>${last.score}/${exam}</b> ${last.score >= passAt ? '(pass)' : '(not yet)'} · ${new Date(last.t).toLocaleDateString()}</span>`
+    : `<span>No practice exam yet</span>`;
+  return `<section class="readiness" aria-label="Exam readiness">
+    <div class="ready-row">
+      <div><span class="label">Predicted score</span><b class="big-num">${r.expected.toFixed(1)}<small>/${exam}</small></b></div>
+      <div><span class="label">Chance of passing</span><b class="big-num">${r.passChance < 0.005 ? '&lt;1%' : r.passChance > 0.995 ? '&gt;99%' : pct(r.passChance)}</b></div>
+    </div>
+    <div class="scale" role="img" aria-label="Predicted ${r.expected.toFixed(1)} of ${exam}; passing is ${passAt}">
+      <span class="fill ${r.expected >= passAt ? 'ok' : ''}" style="width:${(100 * r.expected / exam).toFixed(1)}%"></span>
+      <span class="passline" style="left:${(100 * passAt / exam).toFixed(1)}%"><em>pass ${passAt}</em></span>
+    </div>
+    ${verdict}
+    <p class="hint">${lastMock}</p>
+  </section>`;
+}
+
+function heatMap(now) {
+  const r = readiness(state.questions, state.records, state.scheduler, { passing: state.pool.passing, now });
+  const odds = new Map(r.groups.map(g => [g.group, g.p]));
+  const rows = state.pool.subelements.map(s => {
+    const cells = [...odds.keys()].filter(g => g.startsWith(s.id)).map(g => {
+      const p = odds.get(g);
+      const level = p < 0.4 ? 0 : p < 0.6 ? 1 : p < 0.8 ? 2 : 3;
+      return `<span class="cell l${level}" title="${g}: ${pct(p)} chance right">${g.slice(2)}</span>`;
+    }).join('');
+    return `<div class="heat-row"><span class="heat-id">${s.id}</span><span class="heat-cells">${cells}</span><span class="heat-title">${esc(s.title)}</span></div>`;
+  }).join('');
+  return `<section>
+    <h2>Your odds on each exam question</h2>
+    <p class="legend">Each square is one question on the exam (one per group). <span class="key l0"></span>under 40% <span class="key l1"></span>40–60% <span class="key l2"></span>60–80% <span class="key l3"></span>80%+</p>
+    <div class="heat">${rows}</div>
+  </section>`;
 }
 
 function sessionView() {
@@ -133,7 +194,8 @@ function sessionView() {
   }
 
   return `<header class="top session-top">
-    <button class="link" data-action="quit">✕ End session</button>
+    <button class="link" data-action="quit">✕ ${s.mode === 'mock' ? 'Stop exam' : 'End session'}</button>
+    ${s.mode === 'mock' ? `<span class="mode">${s.kind === 'diagnostic' ? 'Diagnostic' : 'Practice exam'}</span>` : ''}
     <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${done}"><span style="width:${(100 * done / total).toFixed(1)}%"></span></div>
     <span class="count">${done}/${total}</span>
   </header>
@@ -148,6 +210,7 @@ function sessionView() {
 
 function summaryView() {
   const s = state.session;
+  if (s.mode === 'mock') return mockSummaryView();
   const firsts = s.firstTry;
   const good = firsts.filter(r => r.correct && r.sure).length;
   const misses = firsts.filter(r => !(r.correct && r.sure));
@@ -161,6 +224,40 @@ function summaryView() {
       <div class="stat"><b>${s.repeats}</b><span>repeats to fix misses</span></div>
     </section>
     <button class="primary big" data-action="home" data-autofocus>Back to overview</button>
+    ${list}
+  </main>`;
+}
+
+function mockSummaryView() {
+  const s = state.session;
+  const exam = state.pool.examQuestions;
+  const passAt = state.pool.passing;
+  const score = s.results.filter(r => r.correct).length;
+  const passed = score >= passAt;
+  const bySub = state.pool.subelements.map(sub => {
+    const rs = s.results.filter(r => r.q.id.startsWith(sub.id));
+    const right = rs.filter(r => r.correct).length;
+    return `<tr><td><b>${sub.id}</b> ${esc(sub.title)}</td><td class="num ${right === rs.length ? 'all' : ''}">${right}/${rs.length}</td></tr>`;
+  }).join('');
+  const misses = s.results.filter(r => !r.correct);
+  const lucky = s.results.filter(r => r.correct && !r.sure).length;
+  const list = misses.length ? `<h2>Missed (${misses.length})</h2><ul class="misses">${misses.map(r => `<li><b>${esc(r.q.id)}</b> ${esc(r.q.question)}<br><span class="ans">${esc(r.q.answers[r.q.correct])}</span></li>`).join('')}</ul>` : '';
+  const title = s.kind === 'diagnostic' ? 'Diagnostic done' : 'Practice exam done';
+  const note = s.kind === 'diagnostic'
+    ? `<p>This is your starting point; most people start well under the pass mark. Every question you just answered is now in your study queue, misses first.</p>`
+    : `<p>Before this exam the model predicted <b>${s.predicted.toFixed(1)}</b>. ${Math.abs(score - s.predicted) <= 3 ? 'That lines up, so the readiness score is tracking reality.' : score > s.predicted ? 'You beat the prediction. The model is being cautious, which is the safe direction.' : 'You scored below the prediction. Trust the exam over the model, and keep studying.'}</p>`;
+  return `${header()}
+  <main>
+    <h2>${title}</h2>
+    <section class="stats">
+      <div class="stat"><b>${score}<small>/${exam}</small></b><span>${passed ? 'pass' : `pass is ${passAt}`}</span></div>
+      <div class="stat"><b>${exam - score}</b><span>missed</span></div>
+      <div class="stat"><b>${lucky}</b><span>right but guessed</span></div>
+    </section>
+    ${note}
+    <button class="primary big" data-action="home" data-autofocus>Back to overview</button>
+    <h2>By subelement</h2>
+    <table class="breakdown">${bySub}</table>
     ${list}
   </main>`;
 }
@@ -209,6 +306,24 @@ function startSession() {
   render();
 }
 
+function startMock(kind) {
+  const questions = buildMock(state.questions);
+  const r = readiness(state.questions, state.records, state.scheduler, { passing: state.pool.passing });
+  state.session = { mode: 'mock', kind, queue: questions, total: questions.length, answered: 0, repeats: 0, firstTry: [], results: [], seen: new Map(), predicted: r.expected };
+  nextQuestion();
+  state.view = 'session';
+  render();
+}
+
+async function finishMock() {
+  const s = state.session;
+  const score = s.results.filter(r => r.correct).length;
+  state.settings.mocks = [...(state.settings.mocks || []), { pool: state.pool.id, kind: s.kind, t: Date.now(), score, predicted: +s.predicted.toFixed(2) }];
+  await store.saveSettings(state.settings);
+  state.view = 'summary';
+  render();
+}
+
 function nextQuestion() {
   const s = state.session;
   const q = s.queue.shift();
@@ -233,10 +348,16 @@ async function confirm(sure) {
   c.phase = 'feedback';
   s.answered++;
 
-  const updated = applyAnswer(state.scheduler, state.records[c.q.id] || { id: c.q.id }, { correct: c.correct, sure });
+  const updated = applyAnswer(state.scheduler, state.records[c.q.id] || { id: c.q.id }, { correct: c.correct, sure, mock: s.mode === 'mock' });
   state.records[c.q.id] = updated;
   store.saveRecord(state.pool.id, updated).catch(err => console.error('save failed', err));
 
+  if (s.mode === 'mock') {
+    // Exam conditions: no feedback until the end, no repeats.
+    s.results.push({ q: c.q, correct: c.correct, sure });
+    advance();
+    return;
+  }
   if (!c.repeat) s.firstTry.push({ q: c.q, correct: c.correct, sure });
   const times = s.seen.get(c.q.id) || 0;
   s.seen.set(c.q.id, times + 1);
@@ -251,6 +372,7 @@ async function confirm(sure) {
 function advance() {
   const s = state.session;
   if (s.queue.length) { nextQuestion(); render(); }
+  else if (s.mode === 'mock') finishMock();
   else { state.view = 'summary'; render(); }
 }
 
@@ -263,11 +385,16 @@ app.addEventListener('click', async e => {
   state.notice = '';
   if (a === 'pool') { await loadPool(el.dataset.pool); state.view = 'home'; render(); }
   else if (a === 'start') startSession();
+  else if (a === 'mock') startMock(el.dataset.kind || 'practice');
   else if (a === 'pick') pick(Number(el.dataset.i));
   else if (a === 'sure') confirm(true);
   else if (a === 'guess') confirm(false);
   else if (a === 'next') advance();
-  else if (a === 'quit') { state.view = state.session.answered ? 'summary' : 'home'; render(); }
+  else if (a === 'quit') {
+    // A stopped practice exam isn't scored; answers so far still count toward studying.
+    state.view = state.session.mode !== 'mock' && state.session.answered ? 'summary' : 'home';
+    render();
+  }
   else if (a === 'home') { state.view = 'home'; state.confirmReset = false; render(); }
   else if (a === 'settings') { state.view = 'settings'; render(); }
   else if (a === 'export') exportBackup();
@@ -276,6 +403,8 @@ app.addEventListener('click', async e => {
   else if (a === 'reset-yes') {
     await store.resetPool(state.pool.id);
     state.records = {};
+    state.settings.mocks = (state.settings.mocks || []).filter(m => m.pool !== state.pool.id);
+    await store.saveSettings(state.settings);
     state.confirmReset = false;
     state.notice = `${state.pool.name} progress erased.`;
     state.view = 'home';

@@ -49,13 +49,13 @@ export function fromStored(c) {
 }
 
 // Apply one answer to a record and return the updated record (does not mutate).
-export function applyAnswer(scheduler, record, { correct, sure, now = new Date() }) {
+export function applyAnswer(scheduler, record, { correct, sure, now = new Date(), mock = false }) {
   const card = record?.card ? fromStored(record.card) : createEmptyCard(now);
   const { card: next } = scheduler.next(card, now, ratingFor(correct, sure));
   return {
     ...record,
     card: toStored(next),
-    history: [...(record?.history || []), { t: +now, correct, sure }],
+    history: [...(record?.history || []), { t: +now, correct, sure, ...(mock && { mock: true }) }],
   };
 }
 
@@ -78,10 +78,11 @@ export function retrievability(scheduler, record, now = new Date()) {
   return scheduler.get_retrievability(fromStored(record.card), now, false);
 }
 
-// How many questions were seen for the first time today (counts against newPerDay).
+// How many questions were seen for the first time today in a study session (counts against
+// newPerDay). Questions first met in a practice exam don't use up the daily new budget.
 export function newIntroducedToday(records, now = new Date()) {
   const today = dayKey(+now);
-  return Object.values(records).filter(r => r.history?.length && dayKey(r.history[0].t) === today).length;
+  return Object.values(records).filter(r => r.history?.length && !r.history[0].mock && dayKey(r.history[0].t) === today).length;
 }
 
 // ---------- session building ----------
@@ -181,4 +182,71 @@ export function refLinks(refs) {
     out.push({ label: `§${section}`, url: `https://www.ecfr.gov/current/title-47/section-${section}` });
   }
   return out;
+}
+
+// ---------- readiness (Phase 2) ----------
+
+export const GUESS = 0.25;
+
+// Chance of answering one question right on exam day. You always have the 1-in-4 guess;
+// on top of that, a question counts as known only if your last answer was right and sure,
+// weighted by how likely FSRS thinks you still remember it today.
+export function questionOdds(scheduler, record, now = new Date()) {
+  const h = record?.history;
+  if (!h?.length) return GUESS;
+  const last = h[h.length - 1];
+  if (!(last.correct && last.sure)) return GUESS;
+  return GUESS + (1 - GUESS) * retrievability(scheduler, record, now);
+}
+
+// The exam draws one random question from each group, so a group's odds are the
+// average odds across its questions.
+export function groupOdds(questions, records, scheduler, now = new Date()) {
+  const groups = new Map();
+  for (const q of questions) {
+    const g = groupOf(q.id);
+    if (!groups.has(g)) groups.set(g, []);
+    groups.get(g).push(questionOdds(scheduler, records[q.id], now));
+  }
+  return [...groups.entries()].map(([group, ps]) => ({ group, p: ps.reduce((a, b) => a + b, 0) / ps.length }));
+}
+
+// Probability of at least `need` successes among independent trials with odds ps
+// (Poisson-binomial, computed exactly).
+export function atLeast(ps, need) {
+  let dist = [1];
+  for (const p of ps) {
+    const next = new Array(dist.length + 1).fill(0);
+    dist.forEach((v, k) => { next[k] += v * (1 - p); next[k + 1] += v * p; });
+    dist = next;
+  }
+  return dist.slice(need).reduce((a, b) => a + b, 0);
+}
+
+export function readiness(questions, records, scheduler, { passing = 26, now = new Date() } = {}) {
+  const groups = groupOdds(questions, records, scheduler, now);
+  const ps = groups.map(g => g.p);
+  return {
+    groups,
+    expected: ps.reduce((a, b) => a + b, 0),
+    passChance: atLeast(ps, passing),
+  };
+}
+
+// A practice exam built like the real one: one random question from every group,
+// in syllabus order (T1A, T1B, ... like a printed exam).
+export function buildMock(questions, rand = Math.random) {
+  const groups = new Map();
+  for (const q of questions) {
+    const g = groupOf(q.id);
+    if (!groups.has(g)) groups.set(g, []);
+    groups.get(g).push(q);
+  }
+  return [...groups.values()].map(qs => qs[Math.floor(rand() * qs.length)]);
+}
+
+// "Book the exam" when the model says 95%+ and your latest practice exam passed too.
+export function readyToBook(passChance, mocks, passing = 26) {
+  const last = mocks[mocks.length - 1];
+  return passChance >= 0.95 && !!last && last.score >= passing;
 }

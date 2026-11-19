@@ -113,3 +113,71 @@ test('rule references turn into eCFR links', () => {
   assert.deepEqual(refLinks('[1.1307(1)(b)(3)(i)(A)]').map(l => l.label), ['§1.1307']);
   assert.deepEqual(refLinks(''), []);
 });
+
+// ---------- Phase 2 ----------
+import { questionOdds, groupOdds, atLeast, readiness, buildMock, readyToBook, GUESS } from '../js/engine.js';
+
+test('an unseen or missed question is worth a blind guess; a fresh sure answer is worth nearly 1', () => {
+  const now = new Date('2026-12-01T12:00:00');
+  assert.equal(questionOdds(sched, undefined, now), GUESS);
+  const miss = applyAnswer(sched, undefined, { correct: false, sure: true, now });
+  assert.equal(questionOdds(sched, miss, now), GUESS);
+  const guess = applyAnswer(sched, undefined, { correct: true, sure: false, now });
+  assert.equal(questionOdds(sched, guess, now), GUESS);
+  const good = applyAnswer(sched, undefined, { correct: true, sure: true, now });
+  assert.ok(questionOdds(sched, good, now) > 0.95);
+  const later = questionOdds(sched, good, new Date(+now + 30 * DAY));
+  assert.ok(later < questionOdds(sched, good, now) && later > GUESS, 'memory fades over time');
+});
+
+test('pass probability matches the binomial for equal odds', () => {
+  assert.equal(atLeast(new Array(35).fill(1), 26), 1);
+  assert.ok(Math.abs(atLeast(new Array(35).fill(0), 26)) < 1e-12);
+  // 35 coin flips needing 18+ is exactly one half (symmetric).
+  assert.ok(Math.abs(atLeast(new Array(35).fill(0.5), 18) - 0.5) < 1e-12);
+  // Blind guessing passes essentially never.
+  assert.ok(atLeast(new Array(35).fill(0.25), 26) < 1e-6);
+});
+
+test('a brand-new learner is predicted at 8.75 of 35 and a near-certain fail', () => {
+  const r = readiness(tech, {}, sched);
+  assert.equal(r.groups.length, 35);
+  assert.ok(Math.abs(r.expected - 35 * 0.25) < 1e-9);
+  assert.ok(r.passChance < 1e-6);
+});
+
+test('knowing every question today predicts a pass', () => {
+  const now = new Date('2026-12-01T12:00:00');
+  const recs = {};
+  for (const q of tech) recs[q.id] = applyAnswer(sched, undefined, { correct: true, sure: true, now });
+  const r = readiness(tech, recs, sched, { now });
+  assert.ok(r.expected > 33);
+  assert.ok(r.passChance > 0.99);
+  const g = groupOdds(tech, recs, sched, now);
+  assert.ok(g.every(x => x.p > 0.9));
+});
+
+test('a practice exam has one question from each of the 35 groups', () => {
+  for (let i = 0; i < 20; i++) {
+    const m = buildMock(tech);
+    assert.equal(m.length, 35);
+    assert.equal(new Set(m.map(q => groupOf(q.id))).size, 35);
+  }
+});
+
+test('booking needs both the model and the last practice exam', () => {
+  assert.equal(readyToBook(0.97, [], 26), false);
+  assert.equal(readyToBook(0.97, [{ score: 25 }], 26), false);
+  assert.equal(readyToBook(0.90, [{ score: 30 }], 26), false);
+  assert.equal(readyToBook(0.97, [{ score: 20 }, { score: 29 }], 26), true);
+});
+
+test('questions first seen in a practice exam do not use up the daily new budget', () => {
+  const now = new Date('2026-12-01T12:00:00');
+  const recs = {};
+  for (const q of buildMock(tech)) recs[q.id] = applyAnswer(sched, undefined, { correct: true, sure: true, now, mock: true });
+  assert.equal(newIntroducedToday(recs, now), 0);
+  const s = buildSession(tech, recs, { now, newPerDay: 20, sessionSize: 30 });
+  assert.equal(s.newCount, 20);
+  assert.ok(s.questions.every(q => !recs[q.id]), 'new picks skip questions already seen in the exam');
+});
