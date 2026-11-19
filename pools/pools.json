@@ -1,0 +1,52 @@
+{
+  "pools": [
+    {
+      "id": "technician-2026-2030",
+      "name": "Technician",
+      "element": 2,
+      "file": "technician-2026-2030.json",
+      "validFrom": "2026-07-01",
+      "validTo": "2030-06-30",
+      "examQuestions": 35,
+      "passing": 26,
+      "source": "NCVEC 2026-2030 Technician pool, public release with errata of Feb 19, 2026",
+      "withdrawn": [],
+      "subelements": [
+        { "id": "T1", "title": "Commission's rules", "examQuestions": 6, "poolQuestions": 68 },
+        { "id": "T2", "title": "Operating procedures", "examQuestions": 3, "poolQuestions": 37 },
+        { "id": "T3", "title": "Radio wave propagation", "examQuestions": 3, "poolQuestions": 35 },
+        { "id": "T4", "title": "Amateur radio practices", "examQuestions": 2, "poolQuestions": 23 },
+        { "id": "T5", "title": "Electrical principles", "examQuestions": 4, "poolQuestions": 50 },
+        { "id": "T6", "title": "Electronic and electrical components", "examQuestions": 4, "poolQuestions": 46 },
+        { "id": "T7", "title": "Practical circuits", "examQuestions": 4, "poolQuestions": 44 },
+        { "id": "T8", "title": "Signals and emissions", "examQuestions": 4, "poolQuestions": 47 },
+        { "id": "T9", "title": "Antennas and feed lines", "examQuestions": 2, "poolQuestions": 23 },
+        { "id": "T0", "title": "Safety", "examQuestions": 3, "poolQuestions": 36 }
+      ]
+    },
+    {
+      "id": "general-2023-2027",
+      "name": "General",
+      "element": 3,
+      "file": "general-2023-2027.json",
+      "validFrom": "2023-07-01",
+      "validTo": "2027-06-30",
+      "examQuestions": 35,
+      "passing": 26,
+      "source": "NCVEC 2023-2027 General pool, public release with 6th errata of Feb 4, 2026",
+      "withdrawn": ["G1A04", "G1C09", "G8C01", "G1E09", "G1C08", "G1C10", "G6B09", "G9C06", "G9D13"],
+      "subelements": [
+        { "id": "G1", "title": "Commission's rules", "examQuestions": 5, "poolQuestions": 52, "note": "Syllabus heading says 54; G1A04 and G1C09 were withdrawn in the Feb 4, 2026 errata" },
+        { "id": "G2", "title": "Operating procedures", "examQuestions": 5, "poolQuestions": 60 },
+        { "id": "G3", "title": "Radio wave propagation", "examQuestions": 3, "poolQuestions": 37 },
+        { "id": "G4", "title": "Amateur radio practices", "examQuestions": 5, "poolQuestions": 60 },
+        { "id": "G5", "title": "Electrical principles", "examQuestions": 3, "poolQuestions": 40 },
+        { "id": "G6", "title": "Circuit components", "examQuestions": 2, "poolQuestions": 23 },
+        { "id": "G7", "title": "Practical circuits", "examQuestions": 3, "poolQuestions": 38 },
+        { "id": "G8", "title": "Signals and emissions", "examQuestions": 3, "poolQuestions": 42 },
+        { "id": "G9", "title": "Antennas and feed lines", "examQuestions": 4, "poolQuestions": 46 },
+        { "id": "G0", "title": "Electrical and RF safety", "examQuestions": 2, "poolQuestions": 25 }
+      ]
+    }
+  ]
+}

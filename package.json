@@ -1,0 +1,11 @@
+{
+  "name": "ham-study-guide",
+  "private": true,
+  "type": "module",
+  "description": "Spaced-repetition study guide for the FCC Technician and General amateur radio exams",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "validate": "node scripts/validate-pools.mjs",
+    "serve": "python3 -m http.server 8000"
+  }
+}
