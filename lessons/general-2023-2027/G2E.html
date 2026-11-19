@@ -1,0 +1,46 @@
+<p class="lede">Today a lot of HF activity is computers talking through radios. You plug the radio into a laptop, and software turns text into tones. This lesson covers the modes you'll meet: FT8, RTTY, and email-over-radio systems like Winlink.</p>
+
+<h2>How it works: AFSK</h2>
+<p>Most digital modes use <b>AFSK</b> (audio frequency-shift keying). The computer makes audio tones and feeds them into an SSB transmitter, like whistling into the microphone. The sideband you choose matters:</p>
+<div class="table-wrap"><table>
+  <tr><th>Mode</th><th>Sideband</th></tr>
+  <tr><td>FT8, FT4, JT65, JT9</td><td><b>USB</b></td></tr>
+  <tr><td>RTTY via AFSK</td><td><b>LSB</b> (by tradition)</td></tr>
+</table></div>
+
+<h2>FT8</h2>
+<p>FT8 is the most popular HF digital mode. It's very sensitive and transmits in fixed 15-second time slots.</p>
+<ul>
+  <li>It <b>requires your computer's clock to be accurate to within about 1 second</b>, because both stations must agree on when each slot starts. No special hardware modem is needed.</li>
+  <li>On 20 meters it lives around <b>14.074 to 14.077 MHz</b>. Most digital activity on 20 meters is <b>between 14.070 and 14.100 MHz</b>.</li>
+  <li>To answer a CQ, <b>find a clear frequency in the alternate time slot</b> from the calling station. You transmit while it listens.</li>
+</ul>
+
+<h2>RTTY</h2>
+<p>Radioteletype shifts between two tones, "mark" and "space." On amateur HF the usual <b>shift is 170 Hz</b>. If a RTTY signal seems tuned in but won't decode, <b>all of these could be the cause</b>: mark and space reversed, the wrong baud rate, or the wrong sideband.</p>
+
+<h2>Email over radio: Winlink, PACTOR and VARA</h2>
+<ul>
+  <li><b>Winlink</b> is an amateur radio network for <b>sending and receiving email</b>. It's a form of packet radio and works on both VHF and HF, so <b>all those choices are correct</b>.</li>
+  <li>A Winlink Remote Message Server is also called a <b>gateway</b>. To reach one, <b>transmit a connect message on its published frequency</b>.</li>
+  <li><b>VARA</b> is <b>a digital protocol used with Winlink</b>. <b>PACTOR</b> is another.</li>
+  <li>PACTOR links are <b>between exactly two stations</b>. You can't join a contact already in progress.</li>
+  <li>When another signal interferes with PACTOR or VARA, you can see <b>all of these</b>: frequent retries or timeouts, long pauses, or failure to connect.</li>
+</ul>
+
+<h2>Mesh networks</h2>
+<p><b>AREDN</b> (Amateur Radio Emergency Data Network) is a mesh network. Its job is to <b>provide high-speed data during emergencies or community events</b>.</p>
+
+<div class="keyfacts">
+  <h2>Key facts</h2>
+  <ul>
+    <li>FT8, FT4, JT65, JT9: USB. RTTY AFSK: LSB. RTTY shift: 170 Hz.</li>
+    <li>FT8 needs the computer clock within about 1 second. It's at about 14.074–14.077 MHz. Answer in the alternate time slot.</li>
+    <li>20 m digital: mostly 14.070–14.100 MHz.</li>
+    <li>RTTY won't decode: reversed mark and space, wrong baud rate or wrong sideband (all of these).</li>
+    <li>Winlink: email over radio, a form of packet, VHF and HF (all of these). Its servers are called gateways. Connect on the published frequency.</li>
+    <li>VARA: a protocol used with Winlink. PACTOR: two stations only.</li>
+    <li>Interference with PACTOR or VARA: retries, pauses, failed connections (all of these).</li>
+    <li>AREDN: high-speed data for emergencies and events.</li>
+  </ul>
+</div>

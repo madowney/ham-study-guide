@@ -1,0 +1,52 @@
+<p class="lede">This lesson looks inside transmitters and receivers: how an SSB signal is made and decoded, how filters are described, and what software-defined radios do differently.</p>
+
+<h2>Making and receiving SSB</h2>
+<ol>
+  <li>A <b>balanced modulator</b> combines your voice with a carrier and cancels the carrier. Its output is <b>double-sideband</b> RF.</li>
+  <li>A <b>filter</b> then <b>selects one of the two sidebands</b>. That's SSB.</li>
+  <li>On the receiving end, a <b>product detector</b> <b>extracts the voice from the SSB signal</b>.</li>
+</ol>
+
+<h2>Describing filters</h2>
+<figure>
+  <svg viewBox="0 0 560 190" role="img" aria-label="Band-pass filter response: passband with insertion loss at top, half-power points defining bandwidth, ultimate rejection at the bottom">
+    <line class="stroke" x1="40" y1="170" x2="530" y2="170" stroke-width="1"/>
+    <path class="accent" d="M40 160 L 150 158 C 190 150, 190 40, 230 40 L 340 40 C 380 40, 380 150, 420 158 L 530 160" fill="none" stroke-width="3"/>
+    <line class="stroke" x1="40" y1="25" x2="530" y2="25" stroke-width="1" stroke-dasharray="3 4"/><text x="285" y="20" font-size="11" text-anchor="middle">input level</text>
+    <text x="285" y="58" font-size="11" text-anchor="middle">passband (insertion loss = this small drop)</text>
+    <line class="stroke" x1="196" y1="75" x2="374" y2="75" stroke-width="1.5"/><text x="285" y="92" font-size="11" text-anchor="middle">bandwidth: between the half-power points</text>
+    <text x="470" y="150" font-size="11" text-anchor="middle">ultimate rejection</text>
+  </svg>
+</figure>
+<ul>
+  <li><b>Insertion loss</b>: the filter's attenuation <b>inside</b> its passband, the price of putting it in the line.</li>
+  <li><b>Ultimate rejection</b>: its <b>maximum ability to reject</b> signals outside the passband.</li>
+  <li><b>Bandwidth</b> of a band-pass filter: measured between the <b>upper and lower half-power</b> points.</li>
+  <li><b>Cutoff frequency</b>: for a low-pass filter, the frequency above which output power is less than half the input.</li>
+</ul>
+
+<h2>Digital radio building blocks</h2>
+<ul>
+  <li>A <b>DSP filter</b>'s advantage over an analog one: <b>a wide range of bandwidths and shapes</b>, all done in software.</li>
+  <li>A <b>direct digital synthesizer</b> (DDS) gives <b>a variable output frequency with the stability of a crystal oscillator</b>.</li>
+  <li><b>Software-defined radios</b> do <b>filtering, detection and modulation</b> in software (all of these).</li>
+  <li>SDRs use <b>I and Q</b> signals, which are <b>90 degrees</b> apart. With I-Q, <b>any type of modulation can be created</b> with the right processing.</li>
+</ul>
+
+<h2>Odds and ends</h2>
+<ul>
+  <li>An impedance-matching transformer at a transmitter's output <b>presents the right impedance to both the transmitter and the feed line</b>.</li>
+  <li>Receiver sensitivity is affected by <b>all of these</b>: input amplifier gain, demodulator bandwidth and input noise figure.</li>
+</ul>
+
+<div class="keyfacts">
+  <h2>Key facts</h2>
+  <ul>
+    <li>Balanced modulator: double-sideband output. A filter selects one sideband. Product detector: demodulates SSB.</li>
+    <li>Insertion loss: loss inside the passband. Ultimate rejection: maximum rejection outside it.</li>
+    <li>Bandwidth: between the half-power points. Cutoff frequency: where output falls below half power.</li>
+    <li>DSP: many filter shapes. DDS: variable frequency with crystal stability.</li>
+    <li>SDR: filtering, detection and modulation in software. I and Q are 90° apart and can make any modulation.</li>
+    <li>Receiver sensitivity: gain, bandwidth, noise figure (all of these).</li>
+  </ul>
+</div>

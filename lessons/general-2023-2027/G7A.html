@@ -1,0 +1,55 @@
+<p class="lede">A power supply turns wall AC into the steady DC a radio needs. This lesson walks through how, and then covers the one schematic figure on the General exam.</p>
+
+<h2>Rectifiers: AC to pulsing DC</h2>
+<p>Diodes let current flow only one way, so they chop AC into one-direction pulses.</p>
+<figure>
+  <svg viewBox="0 0 560 170" role="img" aria-label="Half-wave keeps every other half cycle; full-wave flips the negative halves, giving pulses at twice the frequency">
+    <text x="130" y="18" font-size="13" font-weight="600" text-anchor="middle">Half-wave: 180°</text>
+    <line class="stroke" x1="20" y1="100" x2="250" y2="100" stroke-width="1"/>
+    <path class="accent" d="M20 100 C 35 40, 60 40, 75 100 L 130 100 C 145 40, 170 40, 185 100 L 240 100" fill="none" stroke-width="3"/>
+    <text x="130" y="140" font-size="12" text-anchor="middle">one diode</text>
+    <text x="420" y="18" font-size="13" font-weight="600" text-anchor="middle">Full-wave: 360°</text>
+    <line class="stroke" x1="310" y1="100" x2="540" y2="100" stroke-width="1"/>
+    <path class="accent" d="M310 100 C 325 40, 350 40, 365 100 C 380 40, 405 40, 420 100 C 435 40, 460 40, 475 100 C 490 40, 515 40, 530 100" fill="none" stroke-width="3"/>
+    <text x="420" y="140" font-size="12" text-anchor="middle">pulses at twice the AC frequency</text>
+  </svg>
+</figure>
+<ul>
+  <li><b>Half-wave</b>: needs <b>only one diode</b>. It uses <b>180°</b> of each cycle.</li>
+  <li><b>Full-wave</b>: uses all <b>360°</b>. The center-tapped version uses <b>two diodes and a center-tapped transformer</b>. (A bridge uses four diodes.)</li>
+  <li>Unfiltered full-wave output is <b>a series of DC pulses at twice the frequency of the AC input</b>.</li>
+</ul>
+
+<h2>Smoothing and safety</h2>
+<ul>
+  <li>The filter that smooths those pulses into steady DC uses <b>capacitors and inductors</b>.</li>
+  <li>A <b>bleeder resistor</b> <b>discharges the filter capacitors when the power is off</b>. Big capacitors can hold a deadly charge long after you unplug the supply.</li>
+  <li>A <b>switchmode</b> supply switches at a high frequency, which <b>allows smaller components</b>. It's lighter and smaller than a linear supply.</li>
+</ul>
+
+<h2>Figure G7-1</h2>
+<figure><img src="pools/figures/g7-1.png" alt="Figure G7-1 from the question pool"></figure>
+<div class="table-wrap"><table>
+  <tr><th>#</th><th>Component</th><th>How to recognize it</th></tr>
+  <tr><td><b>1</b></td><td><b>Field effect transistor</b> (JFET)</td><td>Circle with a straight bar and an arrow pointing into it</td></tr>
+  <tr><td><b>2</b></td><td><b>NPN junction transistor</b></td><td>Circle with an angled emitter whose arrow points <b>out</b> ("Not Pointing iN")</td></tr>
+  <tr><td>3</td><td>Diode</td><td>Triangle against a bar</td></tr>
+  <tr><td>4</td><td>Varactor (variable-capacitance diode)</td><td>Diode with a capacitor's curved plate</td></tr>
+  <tr><td><b>5</b></td><td><b>Zener diode</b></td><td>Diode whose bar has bent "Z" ends</td></tr>
+  <tr><td><b>6</b></td><td><b>Solid-core transformer</b></td><td>Two coils with straight lines (the core) between them</td></tr>
+  <tr><td><b>7</b></td><td><b>Tapped inductor</b></td><td>One coil with a wire leaving from the middle</td></tr>
+  <tr><td>8, 10</td><td>Capacitors</td><td>Two plates, one curved</td></tr>
+  <tr><td>9</td><td>Resistor</td><td>Zigzag</td></tr>
+  <tr><td>11</td><td>Potentiometer</td><td>Zigzag with an arrow pointing at it</td></tr>
+</table></div>
+
+<div class="keyfacts">
+  <h2>Key facts</h2>
+  <ul>
+    <li>Half-wave: one diode, 180°. Full-wave: 360°. Center-tapped full-wave: two diodes.</li>
+    <li>Unfiltered full-wave: DC pulses at twice the input frequency.</li>
+    <li>Filter: capacitors and inductors. Bleeder resistor: discharges the capacitors at power-off.</li>
+    <li>Switchmode: high frequency, smaller components.</li>
+    <li>G7-1: 1 FET, 2 NPN, 5 Zener, 6 solid-core transformer, 7 tapped inductor.</li>
+  </ul>
+</div>

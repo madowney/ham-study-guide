@@ -1,0 +1,39 @@
+<p class="lede">Almost every radio works by mixing signals together to shift them to a convenient frequency. This lesson covers mixers, the unwanted signals they create, and two FM calculations.</p>
+
+<h2>Mixers</h2>
+<p>Mixing two RF signals is called <b>heterodyning</b>. A mixer's output contains <b>the sum and the difference</b> of its two input frequencies.</p>
+<p>A receiver mixes the incoming signal with its own <b>local oscillator</b> (LO) to land on a fixed <b>intermediate frequency</b> (IF). To tune different stations, <b>the local oscillator is the input that is varied</b>.</p>
+<ul>
+  <li><b>Image response</b>: interference from a signal <b>twice the IF away</b> from the one you want. It mixes to the same IF from the other side.</li>
+</ul>
+
+<h2>Intermodulation</h2>
+<p><b>Intermodulation</b> is when two signals combine in a non-linear circuit to produce <b>unwanted spurious outputs</b>.</p>
+<ul>
+  <li><b>Odd-order</b> products are the troublemakers, because they land <b>closest to the original frequencies</b>.</li>
+  <li><b>2F1 − F2</b> is an odd-order product (2 + 1 = 3, which is odd).</li>
+</ul>
+
+<h2>FM arithmetic</h2>
+<p><b>FM bandwidth</b>: 2 × (deviation + modulating frequency).<br>5 kHz deviation and 3 kHz audio: 2 × (5 + 3) = <b>16 kHz</b>.</p>
+<p><b>Multipliers</b>: VHF FM transmitters often generate a lower frequency and then use a <b>multiplier</b> stage, which makes a harmonic, to reach the operating frequency. Deviation gets multiplied along with frequency.</p>
+<p>146.52 ÷ 12.21 = 12, so the oscillator needs only 5 kHz ÷ 12 = <b>416.7 Hz</b> of deviation.</p>
+
+<h2>Practical points</h2>
+<ul>
+  <li><b>Duty cycle</b> matters because some modes, like FT8 and RTTY, transmit at full power the whole time. That <b>could exceed your transmitter's average power rating</b>.</li>
+  <li>Match the receiver bandwidth to the mode for <b>the best signal-to-noise ratio</b>.</li>
+  <li><b>Higher symbol rates need wider bandwidth.</b></li>
+</ul>
+
+<div class="keyfacts">
+  <h2>Key facts</h2>
+  <ul>
+    <li>Heterodyning = mixing. The output is the sum and difference. Tune by varying the local oscillator.</li>
+    <li>Image response: a signal twice the IF away.</li>
+    <li>Intermodulation: a non-linear circuit makes spurious products. Odd-order products are closest. 2F1 − F2 is odd-order.</li>
+    <li>FM bandwidth: 5 kHz deviation + 3 kHz audio = 16 kHz.</li>
+    <li>Multiplier: makes a harmonic. 12.21 MHz × 12 = 146.52 MHz, so deviation is 416.7 Hz.</li>
+    <li>High duty cycle can exceed the average power rating. Matched receiver bandwidth gives the best SNR. Higher symbol rate means wider bandwidth.</li>
+  </ul>
+</div>

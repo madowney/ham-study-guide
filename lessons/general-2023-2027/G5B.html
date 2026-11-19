@@ -1,0 +1,57 @@
+<p class="lede">This lesson is mostly arithmetic: power, AC voltage and decibels. Learn three formulas and a couple of numbers to memorize, and these questions become free points.</p>
+
+<h2>Power</h2>
+<p>There are three versions of the power formula. Use whichever matches what you're given:</p>
+<p class="formula">P = E × I · P = E² ÷ R · P = I² × R</p>
+<div class="table-wrap"><table>
+  <tr><th>Given</th><th>Work</th><th>Answer</th></tr>
+  <tr><td>12 V, 0.2 A</td><td>12 × 0.2</td><td><b>2.4 W</b></td></tr>
+  <tr><td>400 V, 800 Ω</td><td>400² ÷ 800 = 160,000 ÷ 800</td><td><b>200 W</b></td></tr>
+  <tr><td>7 mA, 1,250 Ω</td><td>0.007² × 1,250</td><td><b>about 61 mW</b></td></tr>
+  <tr><td>1200 W in 50 Ω, find E</td><td>√(1200 × 50) = √60,000</td><td><b>245 V RMS</b></td></tr>
+</table></div>
+<p>In a parallel circuit, the total current <b>equals the sum of the currents through each branch</b>.</p>
+
+<h2>Peak, peak-to-peak and RMS</h2>
+<figure>
+  <svg viewBox="0 0 560 190" role="img" aria-label="Sine wave showing peak, peak-to-peak, and RMS at 0.707 of peak">
+    <line class="stroke" x1="40" y1="95" x2="540" y2="95" stroke-width="1"/>
+    <path class="accent" d="M40 95 C 90 -5, 140 -5, 190 95 S 290 195, 340 95 S 440 -5, 490 95" fill="none" stroke-width="3"/>
+    <line class="stroke" x1="115" y1="20" x2="115" y2="95" stroke-width="1.5" stroke-dasharray="4 3"/><text x="122" y="60" font-size="12">peak</text>
+    <line class="stroke" x1="510" y1="20" x2="510" y2="170" stroke-width="1.5"/><text x="470" y="185" font-size="12">peak-to-peak = 2 × peak</text>
+    <line class="stroke" x1="40" y1="42" x2="200" y2="42" stroke-width="1.5" stroke-dasharray="2 3"/><text x="200" y="38" font-size="12">RMS = 0.707 × peak</text>
+  </svg>
+</figure>
+<ul>
+  <li><b>RMS</b> is the AC value that <b>produces the same heating in a resistor as the same DC voltage</b>. Wall power, 120 V, is an RMS figure.</li>
+  <li>RMS = peak × 0.707. Peak = RMS × 1.414. Peak-to-peak = 2 × peak.</li>
+  <li>17 V peak × 0.707 = <b>12 V RMS</b>.</li>
+  <li>120 V RMS × 1.414 = 169.7 V peak, × 2 = <b>339.4 V peak-to-peak</b>.</li>
+</ul>
+
+<h2>PEP from a voltage reading</h2>
+<p>To get PEP from a peak-to-peak reading: halve it to get peak, multiply by 0.707 for RMS, then use P = E² ÷ R.</p>
+<ul>
+  <li>200 V p-p → 100 V peak → 70.7 V RMS → 70.7² ÷ 50 = <b>100 W</b></li>
+  <li>500 V p-p → 250 V peak → 176.8 V RMS → 176.8² ÷ 50 = <b>625 W</b></li>
+</ul>
+<p>An <b>unmodulated carrier</b> is a steady signal, so its peak power equals its average power. The PEP-to-average ratio is <b>1.00</b>, and 1060 W average means <b>1060 W PEP</b>.</p>
+
+<h2>Decibels</h2>
+<ul>
+  <li><b>3 dB</b> = a factor of two in power (double or half).</li>
+  <li><b>1 dB of loss</b> = <b>20.6 percent</b> of the power lost.</li>
+</ul>
+
+<div class="keyfacts">
+  <h2>Key facts</h2>
+  <ul>
+    <li>P = E × I = E² ÷ R = I² × R. Examples: 2.4 W, 200 W, 61 mW. 1200 W in 50 Ω = 245 V RMS.</li>
+    <li>Parallel circuit: the total current is the sum of the branch currents.</li>
+    <li>RMS = same heating as DC. RMS = 0.707 × peak. Peak-to-peak = 2 × peak.</li>
+    <li>17 V peak = 12 V RMS. 120 V RMS = 339.4 V peak-to-peak.</li>
+    <li>PEP into 50 Ω: 200 V p-p = 100 W, 500 V p-p = 625 W.</li>
+    <li>Unmodulated carrier: PEP/average = 1.00.</li>
+    <li>3 dB = 2× power. 1 dB loss = 20.6%.</li>
+  </ul>
+</div>
