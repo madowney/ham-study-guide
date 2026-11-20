@@ -1,0 +1,41 @@
+<p class="lede">The feed line carries power from your radio to the antenna. This lesson explains impedance matching, SWR and loss, and how to calculate SWR in your head.</p>
+
+<h2>Characteristic impedance</h2>
+<p>Every feed line has a <b>characteristic impedance</b>, set by its physical shape. For parallel-conductor line (two wires side by side), it depends on <b>the distance between the conductors' centers and the radius of the conductors</b>.</p>
+<ul>
+  <li>Coax: usually 50 Ω.</li>
+  <li><b>Window line</b>, a ladder-like twin lead: about <b>450 Ω</b>.</li>
+</ul>
+
+<h2>Reflections and SWR</h2>
+<p><b>Reflected power</b> comes from <b>a mismatch between the feed line impedance and the antenna's feed point impedance</b>. To prevent standing waves, <b>the antenna's feed point impedance must match the feed line's characteristic impedance</b>.</p>
+<p><b>SWR for a resistive load</b>: divide the larger impedance by the smaller one.</p>
+<div class="table-wrap"><table>
+  <tr><th>Line</th><th>Load</th><th>Work</th><th>SWR</th></tr>
+  <tr><td>50 Ω</td><td>200 Ω</td><td>200 ÷ 50</td><td><b>4:1</b></td></tr>
+  <tr><td>50 Ω</td><td>10 Ω</td><td>50 ÷ 10</td><td><b>5:1</b></td></tr>
+</table></div>
+<p class="tip">SWR is always written as a number to 1, never "1:4" or "1:5". Those answer choices are traps.</p>
+
+<h2>Antenna tuners don't fix the feed line</h2>
+<p>Say the feed line's SWR is 5:1 and you adjust a tuner at the transmitter until the radio sees 1:1. The SWR on the feed line itself is <b>still 5:1</b>. The tuner only makes the transmitter happy; the mismatch at the antenna end is unchanged.</p>
+
+<h2>Loss</h2>
+<ul>
+  <li>Feed line loss is given in <b>decibels per 100 feet</b>.</li>
+  <li>Coax loss <b>increases with frequency</b>.</li>
+  <li><b>High SWR increases loss</b> in a lossy line, because the power travels the line several times.</li>
+  <li>Loss also hides SWR: <b>higher loss reduces the SWR measured at the input</b>. Reflected power is weakened on its way back. A very lossy line can look like a perfect match!</li>
+</ul>
+
+<div class="keyfacts">
+  <h2>Key facts</h2>
+  <ul>
+    <li>Parallel-line impedance: conductor spacing and radius. Window line: 450 Ω.</li>
+    <li>Reflected power: feed line and feed point impedances don't match. Prevent standing waves by matching them.</li>
+    <li>SWR = bigger ÷ smaller. 50 Ω into 200 Ω = 4:1. 50 Ω into 10 Ω = 5:1.</li>
+    <li>Tuner at the radio: the feed line SWR stays 5:1.</li>
+    <li>Loss: dB per 100 feet. It rises with frequency and with high SWR.</li>
+    <li>More line loss = lower SWR reading at the input.</li>
+  </ul>
+</div>

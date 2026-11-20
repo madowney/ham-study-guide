@@ -1,0 +1,49 @@
+<p class="lede">This lesson is a tour of the parts inside a radio: batteries, capacitors, resistors, diodes, transistors and even vacuum tubes. For each one, the exam wants a single defining fact.</p>
+
+<h2>Batteries</h2>
+<ul>
+  <li>A 12-volt lead-acid battery lasts longest if you never discharge it below about <b>10.5 volts</b>.</li>
+  <li><b>Low internal resistance</b> lets a battery deliver <b>high discharge current</b>. That matters for a transmitter, which draws a lot while you talk.</li>
+</ul>
+
+<h2>Capacitors and resistors</h2>
+<div class="table-wrap"><table>
+  <tr><th>Part</th><th>The fact to know</th></tr>
+  <tr><td>Electrolytic capacitor</td><td><b>High capacitance for its size</b></td></tr>
+  <tr><td>Low-voltage ceramic capacitor</td><td><b>Low cost</b></td></tr>
+  <tr><td>Wire-wound resistor</td><td>Don't use it in RF circuits: it's a coil of wire, and <b>its inductance makes the circuit unpredictable</b></td></tr>
+</table></div>
+<p>Every real inductor also has a little stray capacitance between its turns. <b>Above its self-resonant frequency, an inductor acts like a capacitor.</b></p>
+
+<h2>Diodes</h2>
+<p>A diode doesn't conduct until the forward voltage reaches a threshold:</p>
+<ul>
+  <li><b>Silicon</b>: about <b>0.7 V</b></li>
+  <li><b>Germanium</b>: about <b>0.3 V</b></li>
+</ul>
+
+<h2>Transistors</h2>
+<ul>
+  <li>A bipolar transistor used as a <b>switch</b> flips between two states: <b>saturation</b> (fully on) and <b>cutoff</b> (fully off). The in-between "active region" is for amplifiers.</li>
+  <li>In a <b>MOSFET</b>, <b>the gate is separated from the channel by a thin insulating layer</b>. That's the "oxide" in metal-oxide-semiconductor. Because of it, the gate draws almost no current.</li>
+</ul>
+
+<h2>Vacuum tubes</h2>
+<p>Tubes still turn up in high-power amplifiers. Electrons flow from the cathode to the plate.</p>
+<ul>
+  <li>The <b>control grid</b> regulates that flow, like a tap.</li>
+  <li>The <b>screen grid</b>'s main job is <b>to reduce grid-to-plate capacitance</b>, which could otherwise cause unwanted feedback.</li>
+</ul>
+
+<div class="keyfacts">
+  <h2>Key facts</h2>
+  <ul>
+    <li>12 V lead-acid: don't go below 10.5 V. Low internal resistance: high discharge current.</li>
+    <li>Electrolytic: high capacitance per volume. Ceramic: low cost.</li>
+    <li>No wire-wound resistors at RF: their inductance.</li>
+    <li>Inductor above self-resonance: becomes capacitive.</li>
+    <li>Diode threshold: silicon 0.7 V, germanium 0.3 V.</li>
+    <li>Transistor switch: saturation and cutoff. MOSFET: gate insulated from the channel.</li>
+    <li>Tube: control grid regulates the electrons; screen grid reduces grid-to-plate capacitance.</li>
+  </ul>
+</div>

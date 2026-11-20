@@ -1,0 +1,45 @@
+<p class="lede">This lesson covers three practical skills: making your voice punch through with a speech processor, reading an S meter, and staying inside the band edges on SSB.</p>
+
+<h2>Speech processors</h2>
+<ul>
+  <li>A speech processor <b>increases the apparent loudness</b> of your voice.</li>
+  <li>It works by raising <b>average power</b>; peak power stays the same.</li>
+  <li>Set it wrong and you get <b>all of these</b>: distorted speech, extra intermodulation products and too much background noise.</li>
+</ul>
+
+<h2>S meters</h2>
+<p>An S meter measures <b>received signal strength</b>, on a scale from S1 to S9 and then "dB over S9."</p>
+<ul>
+  <li><b>One S unit = 6 dB</b>, which is 4 times the power.</li>
+  <li>To go from S8 to S9 at a distant station, raise your power about <b>4 times</b>.</li>
+  <li><b>20 dB over S9</b> is <b>100 times</b> more powerful than S9. (10 dB = 10×, 20 dB = 100×.)</li>
+</ul>
+<p class="tip">Doubling your power gains only 3 dB, half an S unit. That's why a big amplifier makes less difference than you'd expect.</p>
+
+<h2>Staying inside the band</h2>
+<p>Your radio displays the suppressed carrier frequency, but your voice occupies about 3 kHz to one side of it:</p>
+<figure>
+  <svg viewBox="0 0 560 140" role="img" aria-label="LSB occupies 3 kHz below the displayed frequency; USB occupies 3 kHz above">
+    <line class="stroke" x1="20" y1="90" x2="260" y2="90" stroke-width="1.5"/>
+    <rect class="band" x="60" y="50" width="100" height="40"/><line class="accent" x1="160" y1="30" x2="160" y2="100" stroke-width="3"/>
+    <text x="160" y="22" font-size="12" text-anchor="middle">7.178 shown</text><text x="110" y="118" font-size="12" text-anchor="middle">LSB: 7.175–7.178</text>
+    <line class="stroke" x1="300" y1="90" x2="540" y2="90" stroke-width="1.5"/>
+    <line class="accent" x1="380" y1="30" x2="380" y2="100" stroke-width="3"/><rect class="band" x="380" y="50" width="100" height="40"/>
+    <text x="380" y="22" font-size="12" text-anchor="middle">14.347 shown</text><text x="430" y="118" font-size="12" text-anchor="middle">USB: 14.347–14.350</text>
+  </svg>
+</figure>
+<ul>
+  <li>LSB extends <b>below</b> the displayed frequency. So stay <b>at least 3 kHz above the lower edge</b> of a phone segment.</li>
+  <li>USB extends <b>above</b> it. So stay <b>at least 3 kHz below the upper edge</b>.</li>
+  <li>That's why 14.347 MHz on USB is the highest you'd set on 20 meters: the signal reaches exactly 14.350, the top of the band.</li>
+</ul>
+
+<div class="keyfacts">
+  <h2>Key facts</h2>
+  <ul>
+    <li>Speech processor: louder, by raising average power. Misadjusted: all of these problems.</li>
+    <li>S meter: received signal strength. 1 S unit = 6 dB = 4× power. S8 to S9: 4× power. S9+20 dB = 100×.</li>
+    <li>LSB at 7.178: 7.175–7.178 MHz. USB at 14.347: 14.347–14.350 MHz.</li>
+    <li>LSB: at least 3 kHz above the lower edge. USB: at least 3 kHz below the upper edge.</li>
+  </ul>
+</div>

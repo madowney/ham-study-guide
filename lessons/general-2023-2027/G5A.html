@@ -1,0 +1,46 @@
+<p class="lede">With DC, only resistance limits current. With AC, coils and capacitors push back too, and how hard they push depends on frequency. That push is called reactance. It's the key to how radios tune.</p>
+
+<h2>Reactance</h2>
+<p><b>Reactance is opposition to the flow of alternating current caused by capacitance or inductance.</b> So the opposition to AC in an inductor is reactance, and the opposition to AC in a capacitor is reactance too.</p>
+<ul>
+  <li>Its symbol is <b>X</b>.</li>
+  <li>It's measured in <b>ohms</b>, like resistance.</li>
+</ul>
+<p>The two kinds go in opposite directions as frequency changes:</p>
+<figure>
+  <svg viewBox="0 0 560 200" role="img" aria-label="Inductive reactance rises with frequency; capacitive reactance falls; they cross at resonance">
+    <line class="stroke" x1="60" y1="170" x2="520" y2="170" stroke-width="1.5"/><line class="stroke" x1="60" y1="170" x2="60" y2="20" stroke-width="1.5"/>
+    <text x="520" y="190" font-size="12" text-anchor="end">frequency →</text><text x="14" y="30" font-size="12">ohms</text>
+    <path class="accent" d="M70 160 L 500 30" stroke-width="3" fill="none"/><text x="440" y="30" font-size="13">inductor X<tspan font-size="10">L</tspan></text>
+    <path class="stroke" d="M80 25 Q 140 140 500 160" stroke-width="3" fill="none"/><text x="410" y="148" font-size="13">capacitor X<tspan font-size="10">C</tspan></text>
+    <circle class="accent-fill" cx="236" cy="110" r="6"/><text x="236" y="96" font-size="12" text-anchor="middle">resonance</text>
+  </svg>
+</figure>
+<ul>
+  <li><b>Inductor</b>: as frequency <b>increases</b>, its reactance <b>increases</b>. A coil resists fast changes.</li>
+  <li><b>Capacitor</b>: as frequency <b>increases</b>, its reactance <b>decreases</b>. High frequencies pass through a capacitor easily.</li>
+</ul>
+<p>Reactance depends on frequency, not on the amplitude (size) of the AC. Answers that mention amplitude are wrong.</p>
+
+<h2>Resonance</h2>
+<p>At one frequency, the inductive and capacitive reactance are equal. That's <b>resonance</b>, and there <b>the two reactances cancel</b>. In a <b>series</b> LC circuit, the impedance at resonance is <b>very low</b>, leaving only resistance. This is how a radio picks out one frequency.</p>
+
+<h2>Impedance and admittance</h2>
+<ul>
+  <li><b>Impedance</b> (Z) is the total opposition to AC: resistance plus reactance. It's <b>the ratio of voltage to current</b>, just like Ohm's law.</li>
+  <li><b>Admittance</b> is <b>the inverse of impedance</b>: how easily current flows.</li>
+</ul>
+
+<h2>Impedance matching</h2>
+<p>A transmitter delivers the most power when the load matches its impedance, usually 50 ohms. At radio frequencies you can match impedances with <b>a transformer, a pi-network or a length of transmission line</b>. All of these work.</p>
+
+<div class="keyfacts">
+  <h2>Key facts</h2>
+  <ul>
+    <li>Reactance: opposition to AC from inductance or capacitance. Symbol X, measured in ohms.</li>
+    <li>Inductor: frequency up, reactance up. Capacitor: frequency up, reactance down.</li>
+    <li>Resonance: the reactances are equal and cancel. A series LC circuit has very low impedance at resonance.</li>
+    <li>Impedance = voltage ÷ current. Admittance = the inverse of impedance.</li>
+    <li>Matching at RF: transformer, pi-network or transmission line (all of these).</li>
+  </ul>
+</div>

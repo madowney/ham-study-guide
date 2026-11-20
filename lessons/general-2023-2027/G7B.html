@@ -1,0 +1,39 @@
+<p class="lede">This lesson covers amplifiers, oscillators and a little digital logic: the building blocks inside every transmitter.</p>
+
+<h2>Amplifier classes</h2>
+<p>Amplifier classes differ in how much of each cycle the transistor or tube conducts. More conduction means a cleaner copy of the input; less means better efficiency.</p>
+<div class="table-wrap"><table>
+  <tr><th>Class</th><th>Conducts</th><th>Linear?</th><th>Efficiency</th></tr>
+  <tr><td>A</td><td><b>100%</b> of the time</td><td>Yes</td><td>Lowest</td></tr>
+  <tr><td>AB</td><td>More than 50%, less than 100%</td><td>Yes</td><td>Medium</td></tr>
+  <tr><td>B</td><td>50%</td><td>Yes, in pairs</td><td>Higher</td></tr>
+  <tr><td>C</td><td>Less than 50%</td><td>No</td><td><b>Highest</b></td></tr>
+</table></div>
+<ul>
+  <li>A <b>linear amplifier</b> is one whose <b>output preserves the input waveform</b>. SSB and AM need one, because their amplitude carries the voice.</li>
+  <li><b>Class C</b> distorts the amplitude, so it's only right for modes with constant amplitude. For a modulated signal, that's <b>FM</b>.</li>
+  <li><b>Efficiency</b> = <b>RF output power ÷ DC input power</b>.</li>
+  <li><b>Neutralizing</b> an amplifier means <b>eliminating self-oscillation</b>, where it starts generating its own signal.</li>
+</ul>
+
+<h2>Oscillators</h2>
+<p>An oscillator creates a signal from nothing but DC power. A sine-wave oscillator is <b>a filter and an amplifier in a feedback loop</b>: the amplifier keeps the signal going, and the filter picks the frequency.</p>
+<p>In an <b>LC oscillator</b>, the frequency is set by <b>the inductance and capacitance in the tank circuit</b>. (Remember resonance from the reactance lesson.)</p>
+
+<h2>Digital logic</h2>
+<ul>
+  <li>A two-input <b>AND gate</b>: the output is high <b>only when both inputs are high</b>.</li>
+  <li>A <b>3-bit counter</b> has 2 × 2 × 2 = <b>8 states</b>, from 000 to 111.</li>
+  <li>A <b>shift register</b> is <b>a clocked array of circuits that passes data in steps along the array</b>, like a bucket brigade.</li>
+</ul>
+
+<div class="keyfacts">
+  <h2>Key facts</h2>
+  <ul>
+    <li>Class A conducts 100% of the time. Class C has the highest efficiency and is OK for FM.</li>
+    <li>Linear amplifier: the output preserves the input waveform.</li>
+    <li>Efficiency = RF out ÷ DC in. Neutralizing stops self-oscillation.</li>
+    <li>Sine-wave oscillator: a filter and an amplifier in a feedback loop. LC oscillator frequency: set by L and C in the tank.</li>
+    <li>AND: high only if both inputs are high. A 3-bit counter has 8 states. Shift register: passes data step by step.</li>
+  </ul>
+</div>

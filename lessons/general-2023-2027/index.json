@@ -1,0 +1,227 @@
+{
+ "pool": "general-2023-2027",
+ "units": [
+  {
+   "title": "The rules for Generals",
+   "groups": [
+    "G1A",
+    "G1C",
+    "G1B",
+    "G1D",
+    "G1E"
+   ]
+  },
+  {
+   "title": "Operating on HF",
+   "groups": [
+    "G2A",
+    "G2B",
+    "G2C",
+    "G2D",
+    "G2E"
+   ]
+  },
+  {
+   "title": "How HF propagates",
+   "groups": [
+    "G3C",
+    "G3B",
+    "G3A"
+   ]
+  },
+  {
+   "title": "Electrical principles",
+   "groups": [
+    "G5A",
+    "G5B",
+    "G5C"
+   ]
+  },
+  {
+   "title": "Components and circuits",
+   "groups": [
+    "G6A",
+    "G6B",
+    "G7A",
+    "G7B",
+    "G7C"
+   ]
+  },
+  {
+   "title": "Signals and modulation",
+   "groups": [
+    "G8A",
+    "G8B",
+    "G8C"
+   ]
+  },
+  {
+   "title": "Your station",
+   "groups": [
+    "G4A",
+    "G4B",
+    "G4C",
+    "G4D",
+    "G4E"
+   ]
+  },
+  {
+   "title": "Antennas and feed lines",
+   "groups": [
+    "G9A",
+    "G9B",
+    "G9C",
+    "G9D"
+   ]
+  },
+  {
+   "title": "Safety",
+   "groups": [
+    "G0A",
+    "G0B"
+   ]
+  }
+ ],
+ "lessons": {
+  "G1A": {
+   "title": "Your General band privileges",
+   "minutes": 4
+  },
+  "G1C": {
+   "title": "Power limits and the 60-meter rules",
+   "minutes": 3
+  },
+  "G1B": {
+   "title": "Antennas, beacons and one-way transmissions",
+   "minutes": 4
+  },
+  "G1D": {
+   "title": "Exams, upgrades and remote operation",
+   "minutes": 4
+  },
+  "G1E": {
+   "title": "Third-party traffic and automatic stations",
+   "minutes": 4
+  },
+  "G2A": {
+   "title": "Single sideband voice",
+   "minutes": 4
+  },
+  "G2B": {
+   "title": "Sharing frequencies and emergencies",
+   "minutes": 3
+  },
+  "G2C": {
+   "title": "CW: Q signals and prosigns",
+   "minutes": 3
+  },
+  "G2D": {
+   "title": "Making contacts, long path and logs",
+   "minutes": 4
+  },
+  "G2E": {
+   "title": "Digital modes: FT8, RTTY and Winlink",
+   "minutes": 4
+  },
+  "G3C": {
+   "title": "The ionosphere's layers",
+   "minutes": 5
+  },
+  "G3B": {
+   "title": "MUF, LUF and skip distance",
+   "minutes": 4
+  },
+  "G3A": {
+   "title": "The Sun and HF conditions",
+   "minutes": 3
+  },
+  "G5A": {
+   "title": "Reactance, impedance and resonance",
+   "minutes": 3
+  },
+  "G5B": {
+   "title": "Power, RMS and decibels",
+   "minutes": 4
+  },
+  "G5C": {
+   "title": "Transformers and combining components",
+   "minutes": 4
+  },
+  "G6A": {
+   "title": "Batteries, diodes, transistors and tubes",
+   "minutes": 3
+  },
+  "G6B": {
+   "title": "Ferrites, ICs and connectors",
+   "minutes": 3
+  },
+  "G7A": {
+   "title": "Power supplies and schematic symbols",
+   "minutes": 4
+  },
+  "G7B": {
+   "title": "Amplifiers, oscillators and logic",
+   "minutes": 3
+  },
+  "G7C": {
+   "title": "Transmitter and receiver circuits",
+   "minutes": 4
+  },
+  "G8A": {
+   "title": "Types of modulation",
+   "minutes": 3
+  },
+  "G8B": {
+   "title": "Mixers, intermod and FM math",
+   "minutes": 3
+  },
+  "G8C": {
+   "title": "Digital codes, error correction and waterfalls",
+   "minutes": 4
+  },
+  "G4A": {
+   "title": "Transceiver and amplifier controls",
+   "minutes": 3
+  },
+  "G4B": {
+   "title": "Test equipment",
+   "minutes": 3
+  },
+  "G4C": {
+   "title": "Interference, grounding and bonding",
+   "minutes": 3
+  },
+  "G4D": {
+   "title": "Speech processors, S meters and band edges",
+   "minutes": 3
+  },
+  "G4E": {
+   "title": "Mobile and solar power",
+   "minutes": 3
+  },
+  "G9A": {
+   "title": "Feed lines and SWR",
+   "minutes": 3
+  },
+  "G9B": {
+   "title": "Dipoles and verticals",
+   "minutes": 3
+  },
+  "G9C": {
+   "title": "Yagi beams",
+   "minutes": 4
+  },
+  "G9D": {
+   "title": "Specialty antennas",
+   "minutes": 3
+  },
+  "G0A": {
+   "title": "RF exposure",
+   "minutes": 3
+  },
+  "G0B": {
+   "title": "Electrical, tower and lightning safety",
+   "minutes": 3
+  }
+ }
+}

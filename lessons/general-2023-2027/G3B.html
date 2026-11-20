@@ -1,0 +1,51 @@
+<p class="lede">On any given path at any given moment, there's a window of frequencies that will get through. This lesson explains that window, MUF on top and LUF on the bottom, and how far one hop reaches.</p>
+
+<h2>MUF and LUF</h2>
+<ul>
+  <li><b>MUF</b>: Maximum Usable Frequency <b>between two points</b>. Above it, signals pass through the ionosphere and are lost to space.</li>
+  <li><b>LUF</b>: Lowest Usable Frequency <b>between two specific points</b>. Below it, signals are <b>absorbed before they reach the destination</b>.</li>
+  <li><b>Between the LUF and the MUF</b>, signals are <b>refracted back to Earth</b>. That's the usable window.</li>
+</ul>
+<figure>
+  <svg viewBox="0 0 560 150" role="img" aria-label="Frequency scale: below LUF absorbed, between LUF and MUF usable, above MUF passes into space; best just below MUF">
+    <rect class="band" x="40" y="50" width="160" height="40"/><text x="120" y="75" font-size="12" text-anchor="middle">absorbed</text>
+    <rect class="accent-fill" x="200" y="50" width="220" height="40" opacity="0.35"/><text x="310" y="75" font-size="12" text-anchor="middle">refracted back to Earth</text>
+    <rect class="band" x="420" y="50" width="120" height="40"/><text x="480" y="75" font-size="12" text-anchor="middle">into space</text>
+    <text x="200" y="40" font-size="13" font-weight="700" text-anchor="middle">LUF</text>
+    <text x="420" y="40" font-size="13" font-weight="700" text-anchor="middle">MUF</text>
+    <path class="accent" d="M405 100 L 405 118" stroke-width="2"/><text x="405" y="135" font-size="12" text-anchor="middle">best: just below MUF</text>
+    <text x="40" y="115" font-size="11" class="quiet">lower frequency →</text>
+  </svg>
+</figure>
+<ul>
+  <li>The <b>least attenuation</b> for long-distance skip is <b>just below the MUF</b>.</li>
+  <li>The MUF depends on <b>all of these</b>: path distance and location, time of day and season, and solar radiation and ionospheric disturbances.</li>
+  <li>If the <b>LUF rises above the MUF</b>, the window closes: <b>ordinary skywave propagation on that path isn't possible</b>.</li>
+</ul>
+
+<h2>How far one hop goes</h2>
+<div class="table-wrap"><table>
+  <tr><th>Region</th><th>Maximum one-hop distance</th></tr>
+  <tr><td>E region</td><td><b>about 1,200 miles</b></td></tr>
+  <tr><td>F2 region</td><td><b>about 2,500 miles</b></td></tr>
+</table></div>
+
+<h2>Checking the bands</h2>
+<ul>
+  <li>The best way to see current propagation from your station is to <b>use an internet network of automated receiving stations</b>, such as the Reverse Beacon Network or PSKReporter. They show where your signal is actually being heard.</li>
+  <li>If a signal arrives by both short path and long path, you may hear <b>a slightly delayed echo</b>.</li>
+  <li>In summer, the lower HF bands have <b>high levels of atmospheric noise, or static</b>, from thunderstorms.</li>
+</ul>
+
+<div class="keyfacts">
+  <h2>Key facts</h2>
+  <ul>
+    <li>MUF = maximum usable frequency between two points. LUF = lowest usable frequency between two specific points.</li>
+    <li>Between LUF and MUF: refracted back. Below LUF: absorbed. Best: just below the MUF.</li>
+    <li>MUF depends on path, time, season and the Sun (all of these).</li>
+    <li>LUF above MUF: no ordinary skywave on that path.</li>
+    <li>One hop: E region about 1,200 miles, F2 about 2,500 miles.</li>
+    <li>Check propagation with automated receiving networks on the internet.</li>
+    <li>Short path plus long path: slight echo. Summer low bands: static.</li>
+  </ul>
+</div>
