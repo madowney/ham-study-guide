@@ -1,6 +1,7 @@
 import {
   DEFAULTS, makeScheduler, shuffleChoices, applyAnswer, statusOf, buildSession, requeue,
   progressBySubelement, refLinks, newIntroducedToday, readiness, buildMock, readyToBook,
+  studyPath, nextLesson, groupQuestions, groupOf,
 } from './engine.js';
 import * as store from './store.js';
 
@@ -18,6 +19,8 @@ const state = {
   session: null,
   view: 'home',
   notice: '',
+  lessons: null,      // lesson index for the current pool, or null
+  lesson: null,       // group id of the lesson being read
 };
 
 // ---------- data ----------
@@ -28,16 +31,31 @@ async function loadPool(poolId) {
   state.pool = pool;
   state.questions = await res.json();
   state.records = await store.loadRecords(pool.id);
+  state.lessons = null;
+  if (pool.lessons) {
+    try {
+      const r = await fetch(pool.lessons);
+      if (r.ok) state.lessons = await r.json();
+    } catch { /* offline: lessons stay hidden */ }
+  }
   state.settings.pool = pool.id;
   await store.saveSettings(state.settings);
 }
 
+const readMap = () => (state.settings.read ||= {})[state.pool.id] ||= {};
+const hasLessons = () => !!state.lessons && Object.keys(state.lessons.lessons).length > 0;
+const lessonInfo = g => state.lessons?.lessons[g];
+// With lessons, new questions only come from groups whose lesson you've read.
+const allowedGroups = () => hasLessons() ? new Set(Object.keys(readMap()).filter(g => readMap()[g])) : undefined;
+const sessionPlan = now => buildSession(state.questions, state.records, {
+  now, scheduler: state.scheduler, newPerDay: state.settings.newPerDay, sessionSize: state.settings.sessionSize, allowedGroups: allowedGroups(),
+});
 const subTitle = id => state.pool.subelements.find(s => s.id === id.slice(0, 2))?.title || '';
 
 // ---------- views ----------
 
 function render() {
-  const views = { home: homeView, session: sessionView, summary: summaryView, settings: settingsView };
+  const views = { home: homeView, session: sessionView, summary: summaryView, settings: settingsView, lesson: lessonView, lessons: lessonsView };
   app.innerHTML = views[state.view]();
   const focus = app.querySelector('[data-autofocus]');
   if (focus) focus.focus({ preventScroll: true });
@@ -60,7 +78,7 @@ function homeView() {
   const newLeft = Math.max(0, state.settings.newPerDay - newIntroducedToday(recs, now));
   const learned = state.questions.filter(q => statusOf(recs[q.id]) === 'learned').length;
   const unseen = state.questions.length - seen.length;
-  const next = Math.min(state.settings.sessionSize, dueNow + Math.min(newLeft, unseen));
+  const next = sessionPlan(now).questions.length;
   const rows = progressBySubelement(state.questions, recs, state.pool.subelements).map(s => {
     const pct = n => (100 * n / s.total).toFixed(1);
     return `<li class="sub">
@@ -73,16 +91,29 @@ function homeView() {
   }).join('');
 
   const startLabel = next ? `Start session · ${next} question${next === 1 ? '' : 's'}` : 'Nothing due right now';
-  const hint = next ? '' : `<p class="hint">You've done today's new questions and nothing is due. Come back tomorrow, or raise the daily limit in Settings.</p>`;
+  const lessonsOn = hasLessons();
+  const nextG = lessonsOn ? nextLesson(state.lessons, readMap()) : null;
+  const hint = next ? '' : lessonsOn
+    ? `<p class="hint">No reviews due right now. ${nextG ? 'Read the next lesson to add new questions.' : 'Come back later for reviews.'}</p>`
+    : `<p class="hint">You've done today's new questions and nothing is due. Come back tomorrow, or raise the daily limit in Settings.</p>`;
   const fresh = seen.length === 0;
+  const path = studyPath(state.lessons);
+  const lessonCard = lessonsOn && nextG ? `<div class="lesson-next">
+      <span class="label">Next lesson · ${path.indexOf(nextG) + 1} of ${path.length}</span>
+      <b>${esc(lessonInfo(nextG).title)}</b>
+      <span class="hint">${nextG} · about ${lessonInfo(nextG).minutes} minutes, then ${state.questions.filter(q => groupOf(q.id) === nextG).length} practice questions</span>
+      <button class="primary big" data-action="lesson" data-group="${nextG}" ${fresh ? '' : 'data-autofocus'}>Read the lesson</button>
+      <button class="link" data-action="lessons">All lessons</button>
+    </div>` : lessonsOn ? `<p class="hint">You've read every lesson written so far. <button class="link" data-action="lessons">All lessons</button></p>` : '';
   const actions = fresh
     ? `<div class="diagnostic">
         <h2>Start with a cold diagnostic</h2>
         <p>Take a 35-question practice exam before studying anything. Guessing is fine; trying first makes the later studying stick better, and it gives you a starting score.</p>
         <button class="primary big" data-action="mock" data-kind="diagnostic" data-autofocus>Take the diagnostic · 35 questions</button>
-        <p><button class="link" data-action="start">Skip it and start studying</button></p>
+        <p><button class="link" data-action="${lessonsOn && nextG ? 'lesson' : 'start'}" data-group="${nextG || ''}">Skip it and ${lessonsOn && nextG ? 'go to the first lesson' : 'start studying'}</button></p>
       </div>`
-    : `<button class="primary big" data-action="start" ${next ? 'data-autofocus' : 'disabled'}>${startLabel}</button>
+    : `${lessonCard}
+       <button class="${lessonsOn && nextG && !next ? 'secondary' : 'primary'} big" data-action="start" ${next && !(lessonsOn && nextG) ? 'data-autofocus' : ''} ${next ? '' : 'disabled'}>${lessonsOn ? (next ? `Daily review · ${next} question${next === 1 ? '' : 's'}` : 'No reviews due') : startLabel}</button>
        ${hint}
        <button class="secondary big" data-action="mock" data-kind="practice">Take a practice exam · 35 questions</button>`;
   return `${header()}
@@ -91,7 +122,9 @@ function homeView() {
     ${readinessCard(now)}
     <section class="stats">
       <div class="stat"><b>${dueNow}</b><span>due for review</span></div>
-      <div class="stat"><b>${Math.min(newLeft, unseen)}</b><span>new left today</span></div>
+      ${hasLessons()
+        ? `<div class="stat"><b>${Object.keys(readMap()).length}<small>/${studyPath(state.lessons).length}</small></b><span>lessons read</span></div>`
+        : `<div class="stat"><b>${Math.min(newLeft, unseen)}</b><span>new left today</span></div>`}
       <div class="stat"><b>${learned}<small>/${state.questions.length}</small></b><span>learned</span></div>
     </section>
     <div class="actions">${actions}</div>
@@ -189,7 +222,9 @@ function sessionView() {
     else verdict = `<p class="verdict bad">Not this time. The answer is <b>${rightLetter}</b>: ${esc(right.text)}</p>`;
     const links = refLinks(q.refs);
     const refs = links.length ? `<p class="refs">FCC rule: ${links.map(l => `<a href="${l.url}" target="_blank" rel="noopener">${esc(l.label)}</a>`).join(', ')}</p>` : '';
-    footer = `<div class="feedback">${verdict}${refs}
+    const g = groupOf(q.id);
+    const lessonLink = lessonInfo(g) ? `<p class="refs">Lesson: <button class="link" data-action="lesson-from-session" data-group="${g}">${esc(lessonInfo(g).title)}</button></p>` : '';
+    footer = `<div class="feedback">${verdict}${lessonLink}${refs}
       <button class="primary" data-action="next" data-autofocus>${s.queue.length ? 'Next' : 'Finish'} <kbd>Enter</kbd></button></div>`;
   }
 
@@ -217,13 +252,16 @@ function summaryView() {
   const list = misses.length ? `<h2>Worth another look</h2><ul class="misses">${misses.map(r => `<li><b>${esc(r.q.id)}</b> ${esc(r.q.question)}<br><span class="ans">${esc(r.q.answers[r.q.correct])}</span></li>`).join('')}</ul>` : '';
   return `${header()}
   <main>
-    <h2>Session done</h2>
+    <h2>${s.mode === 'lesson' ? `Practice done: ${esc(lessonInfo(s.group)?.title || s.group)}` : 'Session done'}</h2>
     <section class="stats">
       <div class="stat"><b>${firsts.length}</b><span>questions</span></div>
       <div class="stat"><b>${good}</b><span>right and sure first time</span></div>
       <div class="stat"><b>${s.repeats}</b><span>repeats to fix misses</span></div>
     </section>
-    <button class="primary big" data-action="home" data-autofocus>Back to overview</button>
+    ${s.mode === 'lesson' && nextLesson(state.lessons, readMap())
+      ? `<button class="primary big" data-action="lesson" data-group="${nextLesson(state.lessons, readMap())}" data-autofocus>Next lesson: ${esc(lessonInfo(nextLesson(state.lessons, readMap())).title)}</button>
+         <button class="secondary big" data-action="home">Back to overview</button>`
+      : `<button class="primary big" data-action="home" data-autofocus>Back to overview</button>`}
     ${list}
   </main>`;
 }
@@ -262,6 +300,76 @@ function mockSummaryView() {
   </main>`;
 }
 
+function lessonsView() {
+  const read = readMap();
+  const units = state.lessons.units.map(u => `<section class="unit">
+      <h2>${esc(u.title)}</h2>
+      <ol class="lesson-list">${u.groups.map(g => {
+        const info = lessonInfo(g);
+        if (!info) return `<li class="soon"><span class="gid">${g}</span> <span>Lesson coming soon</span></li>`;
+        return `<li><button class="lesson-link ${read[g] ? 'done' : ''}" data-action="lesson" data-group="${g}">
+          <span class="gid">${g}</span><span class="lt">${esc(info.title)}</span><span class="tick" aria-label="${read[g] ? 'read' : 'not read'}">${read[g] ? '✓' : ''}</span></button></li>`;
+      }).join('')}</ol></section>`).join('');
+  return `${header()}
+  <main>
+    <p><button class="link" data-action="home">← Overview</button></p>
+    <h2>${esc(state.pool.name)} lessons</h2>
+    <p class="hint">In teaching order. Each lesson covers one exam question group and ends with that group's practice questions.</p>
+    ${units}
+  </main>`;
+}
+
+function lessonView() {
+  const g = state.lesson;
+  const info = lessonInfo(g);
+  const path = studyPath(state.lessons);
+  const n = state.questions.filter(q => groupOf(q.id) === g).length;
+  const inSession = state.session && state.returnToSession;
+  const back = inSession
+    ? `<button class="link" data-action="back-to-session">← Back to the question</button>`
+    : `<button class="link" data-action="lessons">← All lessons</button>`;
+  return `<header class="top session-top">${back}<span class="count">${g} · lesson ${path.indexOf(g) + 1} of ${path.length}</span></header>
+  <main>
+    <article class="lesson">
+      <p class="qid">${g} · ${esc(subTitle(g))} · about ${info.minutes} minutes</p>
+      <h1>${esc(info.title)}</h1>
+      <div id="lesson-body">${state.lessonHtml ?? '<p>Loading…</p>'}</div>
+    </article>
+    ${inSession ? `<button class="primary big" data-action="back-to-session">Back to the question</button>`
+      : `<button class="primary big" data-action="practice" data-group="${g}">Practice now · ${n} questions</button>
+         <p class="hint">Answering right after reading is what makes it stick. These questions then join your daily reviews.</p>`}
+  </main>`;
+}
+
+async function openLesson(g, { fromSession = false } = {}) {
+  if (!g || !lessonInfo(g)) return;
+  state.lesson = g;
+  state.returnToSession = fromSession;
+  state.lessonHtml = null;
+  state.view = 'lesson';
+  render();
+  window.scrollTo(0, 0);
+  try {
+    const r = await fetch(`lessons/${state.pool.id}/${g}.html`);
+    state.lessonHtml = r.ok ? await r.text() : '<p>This lesson could not be loaded.</p>';
+  } catch {
+    state.lessonHtml = '<p>This lesson could not be loaded. Check your connection and try again.</p>';
+  }
+  if (state.view === 'lesson' && state.lesson === g) render();
+}
+
+async function startPractice(g) {
+  readMap()[g] = Date.now();
+  await store.saveSettings(state.settings);
+  const questions = groupQuestions(state.questions, g);
+  state.session = { mode: 'lesson', group: g, queue: questions, total: questions.length, answered: 0, repeats: 0, firstTry: [], seen: new Map() };
+  state.returnToSession = false;
+  nextQuestion();
+  state.view = 'session';
+  render();
+  window.scrollTo(0, 0);
+}
+
 function settingsView() {
   const opt = (name, values, current) => values.map(v => `<option value="${v}" ${v === current ? 'selected' : ''}>${v}</option>`).join('');
   return `${header()}
@@ -294,11 +402,7 @@ function settingsView() {
 // ---------- session flow ----------
 
 function startSession() {
-  const { questions, dueCount, newCount } = buildSession(state.questions, state.records, {
-    scheduler: state.scheduler,
-    newPerDay: state.settings.newPerDay,
-    sessionSize: state.settings.sessionSize,
-  });
+  const { questions, dueCount, newCount } = sessionPlan(new Date());
   if (!questions.length) return;
   state.session = { queue: questions, total: questions.length, answered: 0, repeats: 0, firstTry: [], seen: new Map(), dueCount, newCount };
   nextQuestion();
@@ -348,7 +452,7 @@ async function confirm(sure) {
   c.phase = 'feedback';
   s.answered++;
 
-  const updated = applyAnswer(state.scheduler, state.records[c.q.id] || { id: c.q.id }, { correct: c.correct, sure, mock: s.mode === 'mock' });
+  const updated = applyAnswer(state.scheduler, state.records[c.q.id] || { id: c.q.id }, { correct: c.correct, sure, via: s.mode === 'mock' ? 'mock' : s.mode === 'lesson' ? 'lesson' : undefined });
   state.records[c.q.id] = updated;
   store.saveRecord(state.pool.id, updated).catch(err => console.error('save failed', err));
 
@@ -386,6 +490,11 @@ app.addEventListener('click', async e => {
   if (a === 'pool') { await loadPool(el.dataset.pool); state.view = 'home'; render(); }
   else if (a === 'start') startSession();
   else if (a === 'mock') startMock(el.dataset.kind || 'practice');
+  else if (a === 'lesson') openLesson(el.dataset.group);
+  else if (a === 'lesson-from-session') openLesson(el.dataset.group, { fromSession: true });
+  else if (a === 'back-to-session') { state.view = 'session'; state.returnToSession = false; render(); }
+  else if (a === 'lessons') { state.view = 'lessons'; render(); window.scrollTo(0, 0); }
+  else if (a === 'practice') startPractice(el.dataset.group);
   else if (a === 'pick') pick(Number(el.dataset.i));
   else if (a === 'sure') confirm(true);
   else if (a === 'guess') confirm(false);
@@ -404,6 +513,7 @@ app.addEventListener('click', async e => {
     await store.resetPool(state.pool.id);
     state.records = {};
     state.settings.mocks = (state.settings.mocks || []).filter(m => m.pool !== state.pool.id);
+    if (state.settings.read) delete state.settings.read[state.pool.id];
     await store.saveSettings(state.settings);
     state.confirmReset = false;
     state.notice = `${state.pool.name} progress erased.`;

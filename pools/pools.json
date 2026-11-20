@@ -5,6 +5,7 @@
       "name": "Technician",
       "element": 2,
       "file": "technician-2026-2030.json",
+      "lessons": "lessons/technician-2026-2030/index.json",
       "validFrom": "2026-07-01",
       "validTo": "2030-06-30",
       "examQuestions": 35,

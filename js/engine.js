@@ -49,13 +49,15 @@ export function fromStored(c) {
 }
 
 // Apply one answer to a record and return the updated record (does not mutate).
-export function applyAnswer(scheduler, record, { correct, sure, now = new Date(), mock = false }) {
+// `via` marks answers given in a practice exam ('mock') or right after a lesson ('lesson');
+// a question first met that way doesn't use up the daily new-question budget.
+export function applyAnswer(scheduler, record, { correct, sure, now = new Date(), via }) {
   const card = record?.card ? fromStored(record.card) : createEmptyCard(now);
   const { card: next } = scheduler.next(card, now, ratingFor(correct, sure));
   return {
     ...record,
     card: toStored(next),
-    history: [...(record?.history || []), { t: +now, correct, sure, ...(mock && { mock: true }) }],
+    history: [...(record?.history || []), { t: +now, correct, sure, ...(via && { via }) }],
   };
 }
 
@@ -82,7 +84,7 @@ export function retrievability(scheduler, record, now = new Date()) {
 // newPerDay). Questions first met in a practice exam don't use up the daily new budget.
 export function newIntroducedToday(records, now = new Date()) {
   const today = dayKey(+now);
-  return Object.values(records).filter(r => r.history?.length && !r.history[0].mock && dayKey(r.history[0].t) === today).length;
+  return Object.values(records).filter(r => r.history?.length && !r.history[0].via && !r.history[0].mock && dayKey(r.history[0].t) === today).length;
 }
 
 // ---------- session building ----------
@@ -90,7 +92,8 @@ export function newIntroducedToday(records, now = new Date()) {
 // Reviews that are due come first (least-remembered first). New questions fill the rest,
 // spread across groups so each session is interleaved, starting with the groups you have
 // seen least. The final order is shuffled so subelements are mixed together.
-export function buildSession(questions, records, { now = new Date(), scheduler, newPerDay = DEFAULTS.newPerDay, sessionSize = DEFAULTS.sessionSize, rand = Math.random } = {}) {
+// `allowedGroups` (a Set), when given, limits new questions to groups whose lesson you've read.
+export function buildSession(questions, records, { now = new Date(), scheduler, newPerDay = DEFAULTS.newPerDay, sessionSize = DEFAULTS.sessionSize, rand = Math.random, allowedGroups } = {}) {
   const sched = scheduler || makeScheduler();
   const due = questions
     .filter(q => records[q.id]?.card && records[q.id].card.due <= +now)
@@ -101,7 +104,8 @@ export function buildSession(questions, records, { now = new Date(), scheduler, 
 
   const budget = Math.max(0, newPerDay - newIntroducedToday(records, now));
   const room = Math.max(0, sessionSize - due.length);
-  const fresh = pickNew(questions, records, Math.min(budget, room));
+  const pool = allowedGroups ? questions.filter(q => allowedGroups.has(groupOf(q.id))) : questions;
+  const fresh = pickNew(pool, records, Math.min(budget, room));
 
   const picked = [...due, ...fresh];
   return { questions: spreadGroups(shuffle(picked, rand)), dueCount: due.length, newCount: fresh.length };
@@ -249,4 +253,21 @@ export function buildMock(questions, rand = Math.random) {
 export function readyToBook(passChance, mocks, passing = 26) {
   const last = mocks[mocks.length - 1];
   return passChance >= 0.95 && !!last && last.score >= passing;
+}
+
+// ---------- lessons (Phase 3) ----------
+
+// The study path: lesson groups in teaching order, flattened from the units in a lesson index.
+export function studyPath(lessonIndex) {
+  return lessonIndex ? lessonIndex.units.flatMap(u => u.groups) : [];
+}
+
+// The first lesson on the path you haven't read yet (only lessons that exist).
+export function nextLesson(lessonIndex, read = {}) {
+  return studyPath(lessonIndex).find(g => lessonIndex.lessons[g] && !read[g]) || null;
+}
+
+// Questions for practicing one lesson: every question in the group, shuffled.
+export function groupQuestions(questions, group, rand = Math.random) {
+  return shuffle(questions.filter(q => groupOf(q.id) === group), rand);
 }

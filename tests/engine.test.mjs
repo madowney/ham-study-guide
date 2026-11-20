@@ -175,9 +175,35 @@ test('booking needs both the model and the last practice exam', () => {
 test('questions first seen in a practice exam do not use up the daily new budget', () => {
   const now = new Date('2026-12-01T12:00:00');
   const recs = {};
-  for (const q of buildMock(tech)) recs[q.id] = applyAnswer(sched, undefined, { correct: true, sure: true, now, mock: true });
+  for (const q of buildMock(tech)) recs[q.id] = applyAnswer(sched, undefined, { correct: true, sure: true, now, via: 'mock' });
   assert.equal(newIntroducedToday(recs, now), 0);
   const s = buildSession(tech, recs, { now, newPerDay: 20, sessionSize: 30 });
   assert.equal(s.newCount, 20);
   assert.ok(s.questions.every(q => !recs[q.id]), 'new picks skip questions already seen in the exam');
+});
+
+import { studyPath, nextLesson, groupQuestions } from '../js/engine.js';
+
+test('lesson-gated sessions only introduce questions from lessons you have read', () => {
+  const s = buildSession(tech, {}, { newPerDay: 20, sessionSize: 30, allowedGroups: new Set(['T3B', 'T1A']) });
+  assert.ok(s.questions.length > 0);
+  assert.ok(s.questions.every(q => ['T3B', 'T1A'].includes(groupOf(q.id))));
+  assert.equal(buildSession(tech, {}, { allowedGroups: new Set() }).questions.length, 0);
+});
+
+test('questions practiced right after a lesson do not use the daily new budget', () => {
+  const now = new Date('2026-12-01T12:00:00');
+  const recs = {};
+  for (const q of groupQuestions(tech, 'T3B')) recs[q.id] = applyAnswer(sched, undefined, { correct: true, sure: true, now, via: 'lesson' });
+  assert.equal(Object.keys(recs).length, 12);
+  assert.equal(newIntroducedToday(recs, now), 0);
+});
+
+test('the study path follows the lesson index and skips lessons not written yet', () => {
+  const idx = { units: [{ title: 'A', groups: ['T3B', 'T1A'] }, { title: 'B', groups: ['T1C'] }], lessons: { T3B: {}, T1C: {} } };
+  assert.deepEqual(studyPath(idx), ['T3B', 'T1A', 'T1C']);
+  assert.equal(nextLesson(idx, {}), 'T3B');
+  assert.equal(nextLesson(idx, { T3B: 1 }), 'T1C');
+  assert.equal(nextLesson(idx, { T3B: 1, T1C: 1 }), null);
+  assert.deepEqual(studyPath(null), []);
 });
