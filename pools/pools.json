@@ -30,6 +30,7 @@
       "name": "General",
       "element": 3,
       "file": "general-2023-2027.json",
+      "lessons": "lessons/general-2023-2027/index.json",
       "validFrom": "2023-07-01",
       "validTo": "2027-06-30",
       "examQuestions": 35,

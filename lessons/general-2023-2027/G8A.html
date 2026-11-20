@@ -1,0 +1,47 @@
+<p class="lede">Modulation is how information rides on a radio wave. You can change the wave's strength, its frequency or its phase. This lesson names each method and covers what goes wrong when you overdo it.</p>
+
+<h2>The three things you can change</h2>
+<div class="table-wrap"><table>
+  <tr><th>Change the…</th><th>Name</th></tr>
+  <tr><td>Instantaneous <b>power level</b> (amplitude)</td><td><b>Amplitude modulation</b> (AM)</td></tr>
+  <tr><td>Instantaneous <b>frequency</b></td><td><b>Frequency modulation</b> (FM)</td></tr>
+  <tr><td><b>Phase angle</b></td><td><b>Phase modulation</b> (PM)</td></tr>
+</table></div>
+<ul>
+  <li>A <b>reactance modulator</b> on a transmitter's RF amplifier stage produces <b>phase modulation</b>.</li>
+  <li>Of the voice modes, <b>single sideband</b> uses <b>the narrowest bandwidth</b>.</li>
+</ul>
+
+<h2>AM and overdoing it</h2>
+<ul>
+  <li>The <b>modulation envelope</b> of an AM signal is <b>the shape you get by connecting the peaks of the modulated signal</b>. It traces your voice.</li>
+  <li><b>Overmodulation</b> causes <b>excessive bandwidth</b>: your signal splatters onto nearby frequencies.</li>
+  <li><b>Flat-topping</b> is <b>distortion caused by excessive drive or speech levels</b>. The peaks get clipped flat. Turn down the mic gain.</li>
+</ul>
+
+<h2>Digital modulation</h2>
+<ul>
+  <li><b>Direct binary FSK</b> is made by <b>changing an oscillator's frequency directly with a digital control signal</b>.</li>
+  <li><b>FT8</b> uses <b>8-tone frequency-shift keying</b>.</li>
+  <li><b>QPSK</b> uses four phase shifts, <b>0, 90, 180 and 270 degrees</b>, each representing <b>a pair of bits</b>.</li>
+  <li><b>QPSK31</b>: <b>all of these</b> are true. It's sideband-sensitive, its encoding provides error correction, and its bandwidth is about the same as BPSK31.</li>
+</ul>
+
+<h2>Link budget</h2>
+<p>Engineers plan a radio link like a household budget, in decibels.</p>
+<ul>
+  <li><b>Link budget</b>: <b>transmit power plus antenna gains, minus system losses, as seen at the receiver</b>.</li>
+  <li><b>Link margin</b>: <b>the received power level minus the minimum signal the receiver needs</b>. It's your safety cushion against fading.</li>
+</ul>
+
+<div class="keyfacts">
+  <h2>Key facts</h2>
+  <ul>
+    <li>AM varies power. FM varies frequency. PM varies phase. A reactance modulator makes PM.</li>
+    <li>SSB is the narrowest voice mode.</li>
+    <li>Modulation envelope: connect the peaks. Overmodulation: excessive bandwidth. Flat-topping: too much drive or speech level.</li>
+    <li>Direct FSK: the digital signal shifts the oscillator. FT8: 8-tone FSK.</li>
+    <li>QPSK: 0/90/180/270° for pairs of bits. QPSK31: all of these.</li>
+    <li>Link budget: TX power + antenna gains − losses at the receiver. Link margin: received level − minimum required.</li>
+  </ul>
+</div>

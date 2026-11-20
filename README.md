@@ -72,5 +72,5 @@ No build step and no dependencies at runtime.
 
 1. **Drill tool:** spaced repetition, confidence check, feedback, saved progress. *(done)*
 2. **Readiness:** cold diagnostic, practice exams built like the real one, predicted score, pass probability, and group heat map. *(done)*
-3. **Lessons:** a short lesson for every question group, in teaching order, with practice right after reading. *(Technician done; General next)*
+3. **Lessons:** a short lesson for every question group, in teaching order, with practice right after reading. *(done for both pools)*
 4. **Polish:** offline install, settings for target retention, pool switcher for 2027.

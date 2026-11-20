@@ -1,0 +1,57 @@
+<p class="lede">This lesson covers how digital modes encode text, catch errors, and show up on a waterfall display. It's the vocabulary behind FT8, PSK31, RTTY and packet.</p>
+
+<h2>Codes</h2>
+<ul>
+  <li><b>Baudot</b> (used by RTTY): <b>a 5-bit code with extra start and stop bits</b>.</li>
+  <li><b>Varicode</b> (used by PSK31): common characters get short codes, rare ones long codes. <b>Upper-case letters use longer codes, so they slow transmission down.</b> Type in lower case.</li>
+  <li>The two tones of an FSK signal are called <b>mark and space</b>.</li>
+</ul>
+
+<h2>Catching errors</h2>
+<ul>
+  <li><b>Forward error correction</b> (FEC) sends <b>redundant information along with the data</b>, so the receiver can fix errors on its own.</li>
+  <li><b>ARQ</b> modes ask for repeats instead. A <b>NAK</b> reply means <b>"please retransmit that packet."</b></li>
+  <li>If too many retries fail, <b>the connection is dropped</b>.</li>
+  <li>In a packet radio frame, the <b>header</b> holds the routing and handling information.</li>
+  <li>In a <b>mesh network</b>, <b>if one node fails, a packet can still get through by another node</b>.</li>
+</ul>
+
+<h2>Weak-signal modes</h2>
+<ul>
+  <li><b>FT8</b> can receive signals with <b>very low signal-to-noise ratios</b>, often below the noise you can hear.</li>
+  <li>An FT8 report of <b>+3</b> means <b>a signal-to-noise ratio equivalent to +3 dB in a 2.5 kHz bandwidth</b>.</li>
+  <li><b>WSPR</b> is a <b>low-power beacon mode for checking HF propagation</b>.</li>
+</ul>
+
+<h2>Reading a waterfall</h2>
+<figure>
+  <svg viewBox="0 0 560 170" role="img" aria-label="Waterfall: frequency across, time down, brightness is strength; a clean signal is a single stripe, overmodulation adds side lines">
+    <rect class="band" x="40" y="20" width="480" height="120"/>
+    <rect class="accent-fill" x="150" y="20" width="14" height="120"/>
+    <rect class="accent-fill" x="360" y="20" width="14" height="120"/>
+    <rect class="accent-fill" x="338" y="20" width="4" height="120" opacity="0.5"/><rect class="accent-fill" x="392" y="20" width="4" height="120" opacity="0.5"/>
+    <text x="157" y="158" font-size="12" text-anchor="middle">clean signal</text>
+    <text x="367" y="158" font-size="12" text-anchor="middle">overmodulated: extra side lines</text>
+    <text x="520" y="14" font-size="11" text-anchor="end">frequency →</text>
+    <text x="30" y="80" font-size="11" text-anchor="end">time ↓</text>
+  </svg>
+</figure>
+<ul>
+  <li>A waterfall shows <b>frequency horizontally, signal strength as brightness, and time vertically</b>.</li>
+  <li><b>Vertical lines on either side</b> of a data or RTTY signal mean <b>overmodulation</b>.</li>
+</ul>
+
+<h2>Digital voice</h2>
+<p>The digital voice modes are <b>DMR, D-STAR and System Fusion</b>. FT8, WSPR and Winlink are data modes, not voice.</p>
+
+<div class="keyfacts">
+  <h2>Key facts</h2>
+  <ul>
+    <li>Baudot: 5 bits plus start and stop. PSK31 uses Varicode; capitals are slower. FSK tones: mark and space.</li>
+    <li>FEC: redundant data. ARQ NAK: retransmit. Too many retries: connection dropped. Packet header: routing.</li>
+    <li>Mesh: traffic can route around a failed node.</li>
+    <li>FT8 works at very low SNR. +3 = +3 dB SNR in 2.5 kHz. WSPR: a propagation beacon.</li>
+    <li>Waterfall: frequency across, time down, strength as brightness. Side lines mean overmodulation.</li>
+    <li>Digital voice: DMR, D-STAR, System Fusion.</li>
+  </ul>
+</div>

@@ -128,10 +128,16 @@ async function run(name, contextOpts) {
   assert.match(await page.locator('.readiness').innerText(), /Last practice exam: 35\/35 \(pass\)/);
   await shot(page, `${name}-8-home-after-practice`);
 
-  // 8. General is a separate, fresh pool. Skip the diagnostic; keyboard flow on desktop.
+  // 8. General is a separate, fresh pool with its own lessons. Skip the diagnostic straight to
+  // the first lesson (it shows the exam's band-plan table), then the keyboard flow on desktop.
   await page.getByRole('button', { name: 'General', exact: true }).click();
   await page.getByRole('button', { name: /Take the diagnostic/ }).waitFor();
-  await page.getByRole('button', { name: /Skip it and start studying/ }).click();
+  await page.getByRole('button', { name: /Skip it and go to the first lesson/ }).click();
+  await page.locator('#lesson-body .keyfacts').waitFor();
+  assert.match(await page.locator('.lesson h1').innerText(), /General band privileges/);
+  await shot(page, `${name}-9-general-lesson`);
+  await page.getByRole('button', { name: /Practice now · 10 questions/ }).click();
+  await page.locator('.choice').first().waitFor();
   if (!contextOpts?.isMobile) {
     await page.keyboard.press('1');
     await page.keyboard.press('s');

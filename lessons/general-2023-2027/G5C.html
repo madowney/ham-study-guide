@@ -1,0 +1,48 @@
+<p class="lede">This lesson covers transformers and what happens when you combine resistors, capacitors and inductors. There's one trick to remember: capacitors combine "backwards" from the other two.</p>
+
+<h2>Transformers</h2>
+<p>A transformer is two coils of wire sharing a core. AC in the first coil (the primary) induces voltage in the second (the secondary) through <b>mutual inductance</b>.</p>
+<ul>
+  <li>The voltage scales with the turns ratio. 500 turns in, 1500 turns out, is 3 times the turns, so 120 V AC × 3 = <b>360 V</b>.</li>
+  <li>Run a transformer backwards and the ratio flips. Feed a 4:1 step-<i>down</i> transformer from its secondary, and <b>the input voltage is multiplied by 4</b>.</li>
+  <li>Power in roughly equals power out, so the low-voltage side carries more current. In a step-up transformer, the primary uses heavier wire <b>to handle its higher current</b>.</li>
+  <li><b>Impedance</b> scales with the <i>square</i> of the turns ratio. To match 600 Ω to 50 Ω: 600 ÷ 50 = 12, and √12 ≈ <b>3.5 to 1</b>.</li>
+</ul>
+
+<h2>Combining components</h2>
+<div class="table-wrap"><table>
+  <tr><th></th><th>In series</th><th>In parallel</th></tr>
+  <tr><td>Resistors, inductors</td><td><b>Add</b></td><td>Reciprocal formula (smaller)</td></tr>
+  <tr><td>Capacitors</td><td>Reciprocal formula (smaller)</td><td><b>Add</b></td></tr>
+</table></div>
+<p class="tip">Capacitors do the opposite of resistors and inductors. Two equal parts combined the "reciprocal" way give half of one; three equal parts give a third.</p>
+<p>The reciprocal formula: 1 ÷ (1/A + 1/B + 1/C). For just two parts, a shortcut: (A × B) ÷ (A + B).</p>
+
+<h2>Worked examples (all from the pool)</h2>
+<div class="table-wrap"><table>
+  <tr><th>Parts</th><th>Work</th><th>Answer</th></tr>
+  <tr><td>10, 20, 50 Ω in parallel</td><td>1 ÷ (0.1 + 0.05 + 0.02) = 1 ÷ 0.17</td><td><b>5.9 Ω</b></td></tr>
+  <tr><td>100 and 200 Ω in parallel</td><td>20,000 ÷ 300</td><td><b>67 Ω</b></td></tr>
+  <tr><td>5.0 nF + 5.0 nF + 750 pF in parallel</td><td>5 + 5 + 0.75 nF</td><td><b>10.750 nF</b></td></tr>
+  <tr><td>Three 100 µF in series</td><td>100 ÷ 3</td><td><b>33.3 µF</b></td></tr>
+  <tr><td>20 µF and 50 µF in series</td><td>1000 ÷ 70</td><td><b>14.3 µF</b></td></tr>
+  <tr><td>Three 10 mH in parallel</td><td>10 ÷ 3</td><td><b>3.3 mH</b></td></tr>
+  <tr><td>20 mH and 50 mH in series</td><td>20 + 50</td><td><b>70 mH</b></td></tr>
+</table></div>
+<ul>
+  <li>To <b>increase capacitance</b>, add <b>a capacitor in parallel</b>.</li>
+  <li>To <b>increase inductance</b>, add <b>an inductor in series</b>.</li>
+</ul>
+
+<div class="keyfacts">
+  <h2>Key facts</h2>
+  <ul>
+    <li>Transformer action: mutual inductance. Voltage follows the turns ratio: 500:1500 turns with 120 V in gives 360 V.</li>
+    <li>A 4:1 step-down transformer fed backwards multiplies the voltage by 4.</li>
+    <li>Step-up primary wire is thicker because it carries more current.</li>
+    <li>Impedance ratio = turns ratio squared. 600 Ω to 50 Ω: 3.5 to 1.</li>
+    <li>Resistors and inductors add in series. Capacitors add in parallel.</li>
+    <li>5.9 Ω · 67 Ω · 10.750 nF · 33.3 µF · 14.3 µF · 3.3 mH · 70 mH.</li>
+    <li>More capacitance: capacitor in parallel. More inductance: inductor in series.</li>
+  </ul>
+</div>
